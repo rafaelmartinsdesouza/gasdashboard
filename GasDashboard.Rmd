@@ -46,9 +46,6 @@ img{
   if(!require(RColorBrewer)) {install.packages("RColorBrewer")}
   library(RColorBrewer)
   
-  if(!require(colourvalues)) {install.packages("colourvalues")}
-  library(colourvalues)
-  
   if(!require(sf)) {install.packages("sf")}
   library(sf)
   
