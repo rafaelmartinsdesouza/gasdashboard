@@ -20,8 +20,6 @@ img{
 }
 </style>
 
-
-
 ```{r setup, include=FALSE}
   if(!require(flexdashboard)) {install.packages("flexdashboard")}
   library(flexdashboard)
