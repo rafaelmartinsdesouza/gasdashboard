@@ -930,7 +930,7 @@ fig_ext
 # Calculadora de tarifas {data-icon="ion-cash"}
 
 ```{r}
-source("calculadora/app.R")
+#source("calculadora/app.R")
 
 shinyApp(ui, server)
 ```
