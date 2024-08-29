@@ -50,8 +50,8 @@ img{
   if(!require(geobr)) {install.packages("geobr")}
   library(geobr)
 
-  if(!require(googlesheets4)) {install.packages("googlesheets4")}
-  library(googlesheets4)
+  #if(!require(googlesheets4)) {install.packages("googlesheets4")}
+  #library(googlesheets4)
   
   library(kableExtra)
   library(leaflet.extras)
