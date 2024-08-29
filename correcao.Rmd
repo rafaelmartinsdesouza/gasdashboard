@@ -1,0 +1,163 @@
+---
+title: "Observatório do Gás"
+output: 
+  flexdashboard::flex_dashboard: 
+    theme:  cerulean # spacelab  #latly  #cerulean # 
+    orientation: columns
+    vertical_layout: fill
+    storyboard: true
+    social: menu
+    logo: Marca_CERI_UmaCor_Branca.png
+runtime: shiny
+---
+<style>
+.navbar-logo img {
+    position: absolute;
+    right: 0px;
+}
+img{
+     max-height:48px;
+}
+</style>
+
+```{r setup, include=FALSE}
+  if(!require(flexdashboard)) {install.packages("flexdashboard")}
+  library(flexdashboard)
+  library(readxl)
+  if(!require(tidyverse)) {install.packages("tidyverse")}
+  library(tidyverse)
+  library(plotly)
+  if(!require(ggmap)) {install.packages("ggmap")}
+  library(ggmap)
+  if(!require(xts)) {install.packages("xts")}
+  library(xts)
+  
+  if(!require(geobr)) {install.packages("geobr")}
+  library(geobr)
+  
+  if(!require(ggiraph)) {install.packages("ggiraph")}
+  library(ggiraph)
+  
+  if(!require(leaflet)) {install.packages("leaflet")}
+  library(leaflet)
+  
+  if(!require(RColorBrewer)) {install.packages("RColorBrewer")}
+  library(RColorBrewer)
+  
+  if(!require(colourvalues)) {install.packages("colourvalues")}
+  library(colourvalues)
+  
+  if(!require(sf)) {install.packages("sf")}
+  library(sf)
+  
+  if(!require(geobr)) {install.packages("geobr")}
+  library(geobr)
+
+  if(!require(googlesheets4)) {install.packages("googlesheets4")}
+  library(googlesheets4)
+  
+  if(!require(shiny)) {install.packages("shiny")}
+  library(shiny)
+  
+  library(kableExtra)
+  library(leaflet.extras)
+  #if(!require(d3heatmap)) {install.packages("d3heatmap")}
+  #library(d3heatmap)
+  library(htmltools)
+  
+  options(digits = 2, OutDec = ",")
+```
+
+# Abertura {data-icon="ion-android-navigate"}
+
+## Column {.tabset}
+
+### Acompanhamento do TCC
+
+```{r}
+pacman::p_load(tidyverse, sf, plotly, stringr, lubridate)
+```
+
+### Agentes Autorizados pela ANP
+
+```{r}
+```
+
+### Market Share Petrobras {data-width=700}
+
+```{r}
+#tags$embed(seamless="seamless",  
+#                  src= 'fig_ms.html',
+#                  width='100%',
+#                  height = 400)
+ms_petro<-read.csv2("graph_files/marketshare_petro.csv")
+ms_petro$data <- stringr::str_replace_all(ms_petro$data, "/", "-")
+ms_petro$data <- lubridate::as_date(ms_petro$data, format = '%d-%m-%Y')
+ms_petro %>%
+  dplyr::filter(data >= "2024-01-01") -> ms_petro
+fig_ms <- plotly::plot_ly(ms_petro,
+                          type = 'scatter',
+                          mode = 'lines')%>% add_trace(x = ~data, 
+                                                       y = ~ms,
+                                                       name = 'Market Share')
+fig_ms <- fig_ms %>% plotly::layout(title = 'Market Share da Petrobras - QDC',
+                                    xaxis = list(title = 'Ano'),
+                                    yaxis = list (title = '%'),
+                                    showlegend = FALSE)
+fig_ms
+
+```
+
+### Índice de Concentração no elo da comercialização {data-width=700}
+
+```{r}
+hhi<-read.csv2("graph_files/hhi.csv")
+hhi$data <-stringr::str_replace_all(hhi$data, "/", "-")
+hhi$data <- lubridate::as_date(hhi$data, format = '%d-%m-%Y')
+hhi %>%
+  filter(data >= "2024-01-01") -> hhi
+fig_hhi <- plotly::plot_ly(hhi,
+                           type = 'scatter',
+                           mode = 'lines')%>% add_trace(x = ~data, 
+                                                        y = ~hhi,
+                                                        name = 'índice')
+fig_hhi <- fig_hhi %>% plotly::layout(title = 'Índice HHI QDC',
+                                      xaxis = list(title = 'Ano'),
+                                      yaxis = list (title = 'HHI'), 
+                                      showlegend = FALSE)
+fig_hhi
+```
+
+# Regulação {data-icon="ion-ios-book"}
+
+## Column {.tabset}
+
+### Órgãos Reguladores Estaduais {data-width=700}
+
+```{r}
+```
+
+### Atualizações Regulatórias e Legislativas
+
+```{r}
+```
+
+### Acompanhamento da Agenda Regulatória
+
+```{r}
+```
+
+### Governança
+
+```{r}
+```
+
+
+
+# Calculadora de tarifas {data-icon="ion-cash"}
+
+```{r}
+source("calculadora/app.R")
+
+shinyApp(ui, server)
+```

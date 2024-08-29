@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/1201630/cba0eea5996747fdad04d6a2b956033b
+bundleId: https://api.rpubs.com/api/v1/document/1201630/cba0eea5996747fdad04d6a2b956033b
+url: http://rpubs.com/rafaelmartinsdesouza/1201630
+version: 1

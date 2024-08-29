@@ -1,0 +1,12 @@
+name: DashboarddoGas
+title: DashboarddoGas
+username: dsiot
+account: dsiot
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12459668
+bundleId: 8994388
+url: https://dsiot.shinyapps.io/DashboarddoGas/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

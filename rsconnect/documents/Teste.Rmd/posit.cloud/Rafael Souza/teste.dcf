@@ -1,0 +1,12 @@
+name: teste
+title: Teste
+username: Rafael Souza
+account: Rafael Souza
+server: posit.cloud
+hostUrl: https://api.posit.cloud/v1
+appId: 8430148
+bundleId: 8866732
+url: https://posit.cloud/content/8430148
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

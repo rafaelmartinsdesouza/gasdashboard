@@ -1,0 +1,12 @@
+name: Teste
+title: Teste
+username: dsiot
+account: dsiot
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12321052
+bundleId: 8866779
+url: https://dsiot.shinyapps.io/Teste/
+version: 1
+asMultiple: TRUE
+asStatic: FALSE

@@ -1,0 +1,12 @@
+name: correcao
+title: correcao
+username: dsiot
+account: dsiot
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12321654
+bundleId:
+url: https://dsiot.shinyapps.io/correcao/
+version: 1
+asMultiple: TRUE
+asStatic: FALSE
