@@ -932,7 +932,7 @@ fig_ext
 ```{r}
 #source("calculadora/app.R")
 
-shinyApp(ui, server)
+#shinyApp(ui, server)
 ```
 
 Sobre {data-icon="ion-android-desktop"}
