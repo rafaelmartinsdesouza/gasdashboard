@@ -927,11 +927,9 @@ fig_ext
 ### Contratos de Concessão
 ```
 
-# Calculadora de tarifas {data-icon="ion-cash"}
-
 ```{r}
 #source("calculadora/app.R")
-
+# Calculadora de tarifas {data-icon="ion-cash"}
 #shinyApp(ui, server)
 ```
 
