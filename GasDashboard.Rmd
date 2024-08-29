@@ -58,8 +58,8 @@ img{
   if(!require(googlesheets4)) {install.packages("googlesheets4")}
   library(googlesheets4)
   
-  if(!require(shiny)) {install.packages("shiny")}
-  library(shiny)
+  #if(!require(shiny)) {install.packages("shiny")}
+  #library(shiny)
   
   library(kableExtra)
   library(leaflet.extras)
