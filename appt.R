@@ -20,8 +20,6 @@ ui <- navbarPage(
                tabPanel("Vigências por tipo de Comprador",
                         plotlyOutput("fig_vigc")  # Onde o gráfico será exibido
                ),   
-               
-               
                tabPanel("Opção 2", p("Conteúdo da Opção 2")),
                tabPanel("Opção 3", p("Conteúdo da Opção 3")),
                tabPanel("Opção 4", p("Conteúdo da Opção 4")),
