@@ -1,6 +1,7 @@
 library(shiny)
 library(plotly)
-library(readxl) 
+library(readxl)
+library(tidyverse)
 
 
 source("graficos.R")
