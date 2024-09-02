@@ -25,11 +25,8 @@ ui <- navbarPage(
                ),   
                tabPanel("Assinaturas",
                         plotlyOutput("fig_ass")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Índice de Concentração no elo de distribuição", p("Conteúdo da Opção 4")),
-               tabPanel("Índice de Concentração no elo de distribuição", p("Conteúdo da Opção 4"))
-             )
-           )),
+               )
+           ))),
   
   # Regulação
   tabPanel("Regulação",
@@ -38,11 +35,7 @@ ui <- navbarPage(
              tabsetPanel(
              tabPanel("Assinaturas",
                       plotlyOutput("fig_cl")  # Onde o gráfico será exibido
-             ),
-               tabPanel("Opção 2", p("Conteúdo da Opção 2")),
-               tabPanel("Opção 3", p("Conteúdo da Opção 3")),
-               tabPanel("Opção 4", p("Conteúdo da Opção 4")),
-               tabPanel("Opção 5", p("Conteúdo da Opção 5"))
+             )
              )
            )),
   
