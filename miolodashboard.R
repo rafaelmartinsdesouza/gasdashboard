@@ -604,8 +604,9 @@ fig_qdcmod
 
 ```{r}
 areas_concedidas <- sf::read_sf('areas_concedidas/areas_concedidas.shp')
+head(areas_concedidas)
 
-rename(areas_concedidas, Distribuidora = Dstrbdr) -> areas_concedidas
+rename(areas_concedidas, Distribuidora = dstrbdr) -> areas_concedidas
 
 ##tinha esquecido da distribuidora do RN##
 

@@ -161,10 +161,5 @@ fig_ass <- fig_ass %>% plotly::layout(annotations =
                                            yref = 'paper',
                                            align = 'left'))
 fig_ass
-
-#tags$iframe(seamless="seamless", 
-#                  src= 'fig_ass.html',
-#                  width='70%', 
-#                  height=800,
-#                  style="border:none;")
 ```
+
