@@ -1,5 +1,5 @@
 library(shiny)
-library(shinythemes)
+#library(shinythemes)
 library(plotly)
 library(readxl)
 library(tidyverse)
@@ -12,7 +12,7 @@ source("graficos.R")
 
 # Defina a interface do usuário (UI)
 ui <- navbarPage(
-  theme = shinytheme("cerulean"),  # Escolha um tema base
+  #theme = shinytheme("cerulean"),  # Escolha um tema base
   includeCSS("custom.css"),    # Inclua o CSS customizado
   
   title = "Dashboard do Gás",
