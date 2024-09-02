@@ -1,0 +1,23 @@
+/* www/custom.css */
+
+/* Estilo para a barra superior */
+.navbar {
+  background-color: #001f3f; /* Tom de azul mais escuro para a barra superior */
+  border-color: #001f3f; /* Bordas da barra superior */
+}
+
+/* Cor do texto na barra superior */
+.navbar-brand, .navbar-nav > li > a {
+  color: #001f3f !important; /* Texto branco na barra superior */
+}
+
+/* Estilo para o corpo do dashboard */
+body, .container-fluid {
+  background-color: #FFFFFF; /* Tom de azul mais claro para as demais partes */
+}
+
+/* Estilo para os painéis e outras áreas */
+.panel, .well, .tab-content {
+  background-color: #ffffff; /* Fundo branco para painéis e áreas de conteúdo */
+  border-color: #001f3f; /* Borda clara para painéis */
+}

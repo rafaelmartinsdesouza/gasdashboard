@@ -1,5 +1,3 @@
-
-
 ### Contratos Vigentes 
 
 vig <- read_excel('vigentes_ano.xlsx')
@@ -7,7 +5,7 @@ vig <- vig %>% dplyr::rename(ano = index, num = '0')
 fig_vig <- plotly::plot_ly(vig, x= ~ano, y=~num, name = 'numero de contratos',
                            type = 'scatter', mode = 'lines', line = list(width = 6))
 fig_vig <- fig_vig %>% 
-  layout(#title = list(text = 'Número total de contratos vigentes por ano', size = 60),
+  layout(#title = list(text = '', size = 60),
     yaxis = list(title = 'Número de contratos vigentes', size = 40),
     xaxis = list(title = 'Ano', size = 40))
 fig_vig <- fig_vig %>% plotly::layout(annotations =
@@ -22,7 +20,6 @@ fig_vig
 
 
 ### Vigências por tipo de Comprador
-
 vig_c <- read_csv('vigencia_comprador.csv',
                   show_col_types = FALSE)
 vig_c <- vig_c %>% dplyr::rename(livre = "consumidor livre",
@@ -52,6 +49,7 @@ fig_vigc <- fig_vigc %>% layout(showlegend = TRUE, legend = list(font = list(siz
 fig_vigc
 
 ### Assinaturas
+#Quantidade de Contratos Assinados por Tipo de Comprador
 ass <- read.csv('tabela_total_contratos.csv')
 ass %>% dplyr::filter(ano >= '2020') -> ass
 
@@ -70,7 +68,7 @@ fig_ass <- fig_ass %>% add_trace(ass ,
                                  type = 'scatter',  
                                  mode = 'lines', 
                                  name = 'Total')
-fig_ass <- fig_ass %>% layout(title = "Quantidade de Contratos Assinados por Tipo de Comprador",
+fig_ass <- fig_ass %>% layout(title = "",
                               yaxis = list(title = 'Número de Contratos'),
                               xaxis = list(title = 'Ano'), 
                               barmode = 'group',
@@ -85,7 +83,7 @@ fig_ass <- fig_ass %>% plotly::layout(annotations =
 fig_ass
 
 ### Market Share da Petrobrás
-
+# Market Share da Petrobras em Relação às <br> Quantidades Diárias Contratadas
 ms_petro<-read.csv2("graph_files/marketshare_petro.csv")
 ms_petro$data <- stringr::str_replace_all(ms_petro$data, "/", "-")
 ms_petro$data <- lubridate::as_date(ms_petro$data, format = '%d-%m-%Y')
@@ -97,7 +95,7 @@ fig_ms <- plotly::plot_ly(ms_petro,
                           mode = 'lines')%>% add_trace(x = ~data,
                                                        y = ~ms,
                                                        name = 'Market Share')
-fig_ms <- fig_ms %>% plotly::layout(title = '<i>Market Share</i> da Petrobras em Relação às <br> Quantidades Diárias Contratadas',
+fig_ms <- fig_ms %>% plotly::layout(title = '',
                                     xaxis = list(title = 'Ano'),
                                     yaxis = list (title = '%'),
                                     showlegend = FALSE)
@@ -140,6 +138,7 @@ fig_ofertanac <- fig_ofertanac %>%  plotly::layout(title = 'Oferta Nacional',
 layout(margin = list(l = 50, r = 50, b = 50, t = 50, pad = 10))
 
 ## Regulação 
+# Limite para Enquadramento como Consumidor Livre
 limite <- read.csv2('graph_files/limite_cl.csv')
 limite %>%dplyr::mutate(limite = limite/1000) -> limite
 fig_cl <- plotly::plot_ly(limite,
@@ -150,7 +149,7 @@ fig_cl <- plotly::plot_ly(limite,
                           hoverinfo = "none",
                           text = ~limite,
                           textposition = 'top')%>%
-  layout(title = "Limite para Enquadramento como Consumidor Livre",
+  layout(title = "",
          xaxis = list(title="Limite (em 1000 m³/dia)"),
          yaxis=list(title = "UF",
                     categoryorder="total descending"), ticksuffix = "   ")

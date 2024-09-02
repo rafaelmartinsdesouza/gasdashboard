@@ -1,15 +1,20 @@
 library(shiny)
+library(shinythemes)
 library(plotly)
 library(readxl)
 library(tidyverse)
 #library(shinydashboard)
 library(mapview)
 library(leaflet)
+library(bslib)
 
 source("graficos.R")
 
 # Defina a interface do usuário (UI)
 ui <- navbarPage(
+  theme = shinytheme("cerulean"),  # Escolha um tema base
+  includeCSS("custom.css"),    # Inclua o CSS customizado
+  
   title = "Dashboard do Gás",
   
   # Abertura
@@ -17,13 +22,13 @@ ui <- navbarPage(
            fluidPage(
              #h2("Contratos Vigentes"),
              tabsetPanel(
-               tabPanel("Contratos Vigentes",
+               tabPanel("Contratos Vigentes", h3("Número total de contratos vigentes por ano"),
                         plotlyOutput("grafico_vig")  # Onde o gráfico será exibido
                ),
-               tabPanel("Vigências por tipo de Comprador",
+               tabPanel("Vigências por tipo de Comprador", h3("Vigências por tipo de comprador"),
                         plotlyOutput("fig_vigc")  # Onde o gráfico será exibido
                ),   
-               tabPanel("Assinaturas",
+               tabPanel("Assinaturas", h3("Quantidade de contratos assinados por tipo de comprador"),
                         plotlyOutput("fig_ass")  # Onde o gráfico será exibido
                )
            ))),
@@ -33,7 +38,7 @@ ui <- navbarPage(
            fluidPage(
              #h2("Conteúdo da Página 2"),
              tabsetPanel(
-             tabPanel("Assinaturas",
+             tabPanel("Assinaturas", h3("Limite para Enquadramento como Consumidor Livre"),
                       plotlyOutput("fig_cl")  # Onde o gráfico será exibido
              )
              )
