@@ -389,7 +389,7 @@ fig_demandist<- fig_demandist %>% add_trace (y = ~goiasgas, name = "Goiás Gás"
                                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_demandist<- fig_demandist %>% add_trace (y = ~gaspisa, name = "Gaspisa",
                                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
-fig_demandist <- fig_demandist %>%  plotly::layout(title = 'Demanda (Com termelétricas)',
+fig_demandist <- fig_demandist %>%  plotly::layout(title = 'Demanda (com termelétricas)',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
                                                    legend=list(title=list(text='<b> Distribuidoras </b>'))) %>%
@@ -525,13 +525,13 @@ fig_balanco <- fig_balanco %>% add_lines(y = ~perdas_ajustes,
                                          fill = 'none', 
                                          stackgroup = 'two',
                                          legendgroup = 'group2',
-                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_balanco <- fig_balanco %>% add_lines(y = ~demanda_nt, 
                                          name = 'Demanda Não Termelétrica', 
                                          fill = 'none', 
                                          stackgroup = 'two',
                                          legendgroup = 'group2',
-                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_balanco  <- fig_balanco  %>%  plotly::layout(title = '',
                                                  xaxis = list(title = 'Ano'),
                                                  yaxis = list (title = 'Volume em milhões de m³/dia'),
