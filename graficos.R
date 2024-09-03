@@ -172,11 +172,13 @@ oferta_imp$data <- lubridate::as_date(oferta_imp$data, format = '%d-%m-%Y')
 
 fig_ofertaimp<- plotly::plot_ly(oferta_imp,
                                 x = ~data,
-                                y = ~bolivia,
-                                name = 'Boliviana', type = 'scatter', mode = 'none', stackgroup = 'one')
-
-fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~argentina, name = "Argentina")
-fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~regaseificacao_gnl, name = "Regaseificação (GNL)")
+                                y = ~argentina,
+                                name = 'Argentina', type = 'scatter', mode = 'none', stackgroup = 'one',
+                                line = list(color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~bolivia, name = "Boliviana",
+                                              line = list(color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~regaseificacao_gnl, name = "Regaseificação (GNL)",
+                                              line = list(color = brewer.pal(n = 8, name = "Dark2")[3]))
 fig_ofertaimp <- fig_ofertaimp %>%  plotly::layout(title = '',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
@@ -292,7 +294,8 @@ fig_ofertaint<- plotly::plot_ly(oferta_int,
                                 name = 'Produção Bruta', 
                                 type = 'scatter', 
                                 mode = 'none', 
-                                stackgroup = 'one', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
+                                stackgroup = 'one', 
+                                line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_ofertaint <- fig_ofertaint %>% add_trace (y = ~import, 
                                               name = "Importação", line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_ofertaint <- fig_ofertaint %>% add_lines(y = ~oferta_interna, 
@@ -315,19 +318,21 @@ demanda_seg$data <- lubridate::as_date(demanda_seg$data, format = '%d-%m-%Y')
 fig_demandaseg<- plotly::plot_ly(demanda_seg,
                                  x = ~data,
                                  y = ~industrial,
-                                 name = 'Industrial', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~automotivo, name = "Automotivo")
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~ger_ele, name = "Geração Elétrica")
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~cogeracao, name = "Cogeração")
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~residencial, name = "Residencial")
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~comercial, name = "Comercial")
-fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~outros_mais_GNC, name = "Outros (incluindo GNC)")
+                                 name = 'Industrial', type = 'scatter', mode = 'none', stackgroup = 'one',
+                                 line = list(width = 1,color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~automotivo, name = "Automotivo", line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~ger_ele, name = "Geração Elétrica", line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~cogeracao, name = "Cogeração", line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~residencial, name = "Residencial", line = list(width = 2,color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~comercial, name = "Comercial", line = list(width = 2,color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandaseg <- fig_demandaseg %>% add_trace (y = ~outros_mais_GNC, name = "Outros (incluindo GNC)", line = list(width = 2,color = brewer.pal(n = 8, name = "Dark2")[3]))
 
 fig_demandaseg <- fig_demandaseg %>%  plotly::layout(title = '',
                                                      xaxis = list(title = 'Ano'),
                                                      yaxis = list (title = 'Volume em m³/dia'),
                                                      legend=list(title=list(text='<b> Segmentos </b>'))) %>%
   layout(margin = list(l = 50, r = 50, b = 50, t = 50, pad = 10))
+fig_demandaseg
 
 ### Demanda por distribuidora com segmento termelétrico
 
@@ -338,29 +343,52 @@ demanda_dist$data <- lubridate::as_date(demanda_dist$data, format = '%d-%m-%Y')
 fig_demandist<- plotly::plot_ly(demanda_dist,
                                 x = ~data,
                                 y = ~comgas,
-                                name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_demandist<- fig_demandist %>% add_trace (y = ~ceg, name = "CEG")
-fig_demandist<- fig_demandist %>% add_trace (y = ~ceg_rio, name = "CEG Rio")
-fig_demandist<- fig_demandist %>% add_trace (y = ~bahiagas, name = "BahiaGás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~copergas, name = "Copergás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~cigas, name = "Cigás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~gasmig, name = "Gasmig")
-fig_demandist<- fig_demandist %>% add_trace (y = ~esgas, name = "ES Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~gasmar, name = "Gasmar")
-fig_demandist<- fig_demandist %>% add_trace (y = ~sulgas, name = "Sul Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~scgas, name = "SC Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~compagas, name = "Compagas")
-fig_demandist<- fig_demandist %>% add_trace (y = ~msgas, name = "MS Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~cegas, name = "Cegás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~naturgy_sp, name = "Naturgy SP")
-fig_demandist<- fig_demandist %>% add_trace (y = ~gas_brasiliano, name = "Gas Brasiliano")
-fig_demandist<- fig_demandist %>% add_trace (y = ~algas, name = "Algás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~potigas, name = "Potigás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~pbgas, name = "PB Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~cebgas, name = "Cebgás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~mtgas, name = "MT Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~goiasgas, name = "Goiás Gás")
-fig_demandist<- fig_demandist %>% add_trace (y = ~gaspisa, name = "Gaspisa")
+                                name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one', 
+                                line = list(width = 2,color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~ceg, name = "CEG",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~ceg_rio, name = "CEG Rio",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~bahiagas, name = "BahiaGás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~copergas, name = "Copergás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~cigas, name = "Cigás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~gasmig, name = "Gasmig",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~esgas, name = "ES Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~gasmar, name = "Gasmar",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~sulgas, name = "Sul Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~scgas, name = "SC Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~compagas, name = "Compagas",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~msgas, name = "MS Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~cegas, name = "Cegás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~naturgy_sp, name = "Naturgy SP",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~gas_brasiliano, name = "Gas Brasiliano",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~algas, name = "Algás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~potigas, name = "Potigás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~pbgas, name = "PB Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~cebgas, name = "Cebgás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~mtgas, name = "MT Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~goiasgas, name = "Goiás Gás",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist<- fig_demandist %>% add_trace (y = ~gaspisa, name = "Gaspisa",
+                                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
 fig_demandist <- fig_demandist %>%  plotly::layout(title = 'Demanda (Com termelétricas)',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
@@ -374,29 +402,52 @@ demanda_dist_st$data <- lubridate::as_date(demanda_dist_st$data, format = '%d-%m
 fig_demandist_st<- plotly::plot_ly(demanda_dist_st,
                                    x = ~data,
                                    y = ~comgas,
-                                   name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~ceg, name = "CEG")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~ceg_rio, name = "CEG Rio")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~bahiagas, name = "BahiaGás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~copergas, name = "Copergás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cigas, name = "Cigás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gasmig, name = "Gasmig")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~esgas, name = "ES Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gasmar, name = "Gasmar")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~sulgas, name = "Sul Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~scgas, name = "SC Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~compagas, name = "Compagas")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~msgas, name = "MS Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cegas, name = "Cegás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~naturgy_sp, name = "Naturgy SP")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gas_brasiliano, name = "Gas Brasiliano")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~algas, name = "Algás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~potigas, name = "Potigás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~pbgas, name = "PB Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cebgas, name = "Cebgás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~mtgas, name = "MT Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~goiasgas, name = "Goiás Gás")
-fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gaspisa, name = "Gaspisa")
+                                   name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one',
+                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~ceg, name = "CEG",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~ceg_rio, name = "CEG Rio",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~bahiagas, name = "BahiaGás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~copergas, name = "Copergás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cigas, name = "Cigás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gasmig, name = "Gasmig",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~esgas, name = "ES Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gasmar, name = "Gasmar",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~sulgas, name = "Sul Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~scgas, name = "SC Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~compagas, name = "Compagas",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~msgas, name = "MS Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cegas, name = "Cegás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~naturgy_sp, name = "Naturgy SP",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gas_brasiliano, name = "Gas Brasiliano",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~algas, name = "Algás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~potigas, name = "Potigás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~pbgas, name = "PB Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~cebgas, name = "Cebgás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~mtgas, name = "MT Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~goiasgas, name = "Goiás Gás",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_demandist_st<- fig_demandist_st %>% add_trace (y = ~gaspisa, name = "Gaspisa",
+                                                   line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
 fig_demandist_st <- fig_demandist_st %>%  plotly::layout(title = '',
                                                          xaxis = list(title = 'Ano'),
                                                          yaxis = list (title = 'Volume em m³/dia'),
@@ -413,19 +464,32 @@ fig_consumo70 <- plotly::plot_ly(consumo_70,
                                  type = 'scatter', 
                                  mode = 'none', 
                                  stackgroup = 'one',
-                                 name = 'Química') %>%
-  add_trace(y=~ferro_gusa_aco,name = 'Ferro-Gusa e Aço') %>%
-  add_trace(y=~ceramica,name = 'Cerâmica') %>%
-  add_trace(y=~papel_celulose,name = 'Papel e Celulose') %>%
-  add_trace(y=~alimentos_bebidas,name = 'Alimentos e Bebidas') %>%
-  add_trace(y=~nao_ferroso,name = 'Não-Ferrosos e Outros (Metalurgia)') %>%
-  add_trace(y=~mineiracao,name = 'Mineração e Pelotização') %>%
-  add_trace(y=~textil,name = 'Têxtil') %>%
-  add_trace(y=~outros_industrial,name = 'Outros (Industrial)') %>%
-  add_trace(y=~residencial_com,name = 'Residencial, Comercial e Público') %>%
-  add_trace(y=~transporte_gnv,name = 'Transportes (GNV)') %>%
-  add_trace(y=~nao_energetico,name = 'Não Energético (matéria prima)') %>%
-  add_trace(y=~refino_petroleo,name = 'Refino de Petróleo')
+                                 name = 'Química',
+                                 line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1])) %>%
+  add_trace(y=~ferro_gusa_aco,name = 'Ferro-Gusa e Aço',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2])) %>%
+  add_trace(y=~ceramica,name = 'Cerâmica',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3])) %>%
+  add_trace(y=~papel_celulose,name = 'Papel e Celulose',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4])) %>%
+  add_trace(y=~alimentos_bebidas,name = 'Alimentos e Bebidas',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5])) %>%
+  add_trace(y=~nao_ferroso,name = 'Não-Ferrosos e Outros (Metalurgia)',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6])) %>%
+  add_trace(y=~mineiracao,name = 'Mineração e Pelotização',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7])) %>%
+  add_trace(y=~textil,name = 'Têxtil',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8])) %>%
+  add_trace(y=~outros_industrial,name = 'Outros (Industrial)',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1])) %>%
+  add_trace(y=~residencial_com,name = 'Residencial, Comercial e Público',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2])) %>%
+  add_trace(y=~transporte_gnv,name = 'Transportes (GNV)',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3])) %>%
+  add_trace(y=~nao_energetico,name = 'Não Energético (matéria prima)',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4])) %>%
+  add_trace(y=~refino_petroleo,name = 'Refino de Petróleo',
+            line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
 
 fig_consumo70 %>% plotly::layout(xaxis = list(title = 'Data'),
                                  yaxis = list(title = 'Milhões'),
@@ -445,24 +509,29 @@ fig_balanco<- plotly::plot_ly(balanco,
                               type = 'scatter', 
                               mode = 'none', 
                               stackgroup = 'one',
-                              legendgroup = 'group1')
+                              legendgroup = 'group1',
+                              line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_balanco<- fig_balanco %>% add_trace (y = ~oferta_boliviana, 
                                          name = "Bolívia",
-                                         legendgroup = 'group1')
+                                         legendgroup = 'group1',
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_balanco<- fig_balanco %>% add_trace (y = ~gnl, 
                                          name = "GNL",
-                                         legendgroup = 'group1')
+                                         legendgroup = 'group1',
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
 #se quando eu não quiser empilhar é so colocar em outro stackgroup
 fig_balanco <- fig_balanco %>% add_lines(y = ~perdas_ajustes, 
                                          name = 'Perdas e Ajustes', 
                                          fill = 'none', 
                                          stackgroup = 'two',
-                                         legendgroup = 'group2')
+                                         legendgroup = 'group2',
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_balanco <- fig_balanco %>% add_lines(y = ~demanda_nt, 
                                          name = 'Demanda Não Termelétrica', 
                                          fill = 'none', 
                                          stackgroup = 'two',
-                                         legendgroup = 'group2')
+                                         legendgroup = 'group2',
+                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_balanco  <- fig_balanco  %>%  plotly::layout(title = '',
                                                  xaxis = list(title = 'Ano'),
                                                  yaxis = list (title = 'Volume em milhões de m³/dia'),
@@ -481,24 +550,29 @@ fig_balanco_anual<- plotly::plot_ly(balanco_anual,
                                     type = 'scatter', 
                                     mode = 'none', 
                                     stackgroup = 'one',
-                                    legendgroup = 'group1')
+                                    legendgroup = 'group1',
+                                    line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_balanco_anual<- fig_balanco_anual %>% add_trace (y = ~oferta_bolivia, 
                                                      name = "Bolívia",
-                                                     legendgroup = 'group1')
+                                                     legendgroup = 'group1',
+                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_balanco_anual<- fig_balanco_anual %>% add_trace (y = ~gnl, 
                                                      name = "GNL",
-                                                     legendgroup = 'group1')
+                                                     legendgroup = 'group1',
+                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
 #se quando eu não quiser empilhar é so colocar em outro stackgroup
 fig_balanco_anual <- fig_balanco_anual %>% add_lines(y = ~perdas_ajustes, 
                                                      name = 'Perdas e Ajustes', 
                                                      fill = 'none', 
                                                      stackgroup = 'two',
-                                                     legendgroup = 'group2')
+                                                     legendgroup = 'group2',
+                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_balanco_anual <- fig_balanco_anual %>% add_lines(y = ~demanda_nt, 
                                                      name = 'Demanda Não Termelétrica', 
                                                      fill = 'none', 
                                                      stackgroup = 'two',
-                                                     legendgroup = 'group2')
+                                                     legendgroup = 'group2',
+                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_balanco_anual  <- fig_balanco_anual  %>%  plotly::layout(title = '',
                                                              xaxis = list(title = 'Ano'),
                                                              yaxis = list (title = 'Volume em milhões de m³/dia'),

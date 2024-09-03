@@ -68,7 +68,7 @@ ui <- navbarPage(
                tabPanel("Oferta Interna", h3(class = "text-blue", "Oferta interna de gás natural"),
                         plotlyOutput("fig_ofertaint")  # Onde o gráfico será exibido
                ),
-               tabPanel("Demanda", h3(class = "text-blue", "Demanda por segmento de consumo"),
+               tabPanel("Demanda por segmento", h3(class = "text-blue", "Demanda por segmento de consumo"),
                         plotlyOutput("fig_demandaseg")  # Onde o gráfico será exibido
                ),
                tabPanel("Demanda por distribuidora", h3(class = "text-blue", "Demanda por distribuidora (com termelétricas)"),
