@@ -3,7 +3,7 @@
 vig <- read_excel('vigentes_ano.xlsx')
 vig <- vig %>% dplyr::rename(ano = index, num = '0')
 fig_vig <- plotly::plot_ly(vig, x= ~ano, y=~num, name = 'numero de contratos',
-                           type = 'scatter', mode = 'lines', line = list(width = 6))
+                           type = 'scatter', mode = 'lines', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_vig <- fig_vig %>% 
   layout(#title = list(text = '', size = 60),
     yaxis = list(title = 'Número de contratos vigentes', size = 40),
@@ -18,7 +18,6 @@ fig_vig <- fig_vig %>% plotly::layout(annotations =
                                              size = 40))
 fig_vig
 
-
 ### Vigências por tipo de Comprador
 vig_c <- read_csv('vigencia_comprador.csv',
                   show_col_types = FALSE)
@@ -29,20 +28,20 @@ vig_c <- vig_c %>% dplyr::rename(livre = "consumidor livre",
 fig_vigc <- plotly::plot_ly(vig_c,
                             x = ~ano,
                             y =~comercializador,
-                            type = 'scatter', mode = 'lines', line = list(width = 6),
+                            type = 'scatter', mode = 'lines', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]),
                             name = 'Comercializador')
 fig_vigc <- fig_vigc %>% add_trace(y = ~livre, 
-                                   name = 'Consumidor Livre')
+                                   name = 'Consumidor Livre', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_vigc <- fig_vigc %>% add_trace(y = ~distribuidor_gnc, 
-                                   name = 'Distribuidora de GNC')
+                                   name = 'Distribuidora de GNC', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
 fig_vigc <- fig_vigc %>% add_trace(y = ~distribuidor_gnl, 
-                                   name = 'Distribuidora de GNL')
+                                   name = 'Distribuidora de GNL', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_vigc <- fig_vigc %>% add_trace(y = ~distribuidora, 
-                                   name = 'Distribuidora Local (Gás Canalizado)')
+                                   name = 'Distribuidora Local (Gás Canalizado)', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_vigc <- fig_vigc %>% add_trace(y = ~outros, 
-                                   name = 'Outros')
+                                   name = 'Outros', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[6]))
 fig_vigc <- fig_vigc %>% add_trace(y = ~produtor_boca, 
-                                   name = 'Produtor (boca do poço)')
+                                   name = 'Produtor (boca do poço)', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[7]))
 fig_vigc <- fig_vigc %>% layout(showlegend = TRUE, legend = list(font = list(size = 18)),
                                 yaxis = list(title = list(text ='Comercializador', size = 18)),
                                 xaxis = list(title = list(text ='Ano', size = 30)))
@@ -54,13 +53,13 @@ ass <- read.csv('tabela_total_contratos.csv')
 ass %>% dplyr::filter(ano >= '2020') -> ass
 
 fig_ass <- plot_ly(ass, x = ~ano, y = ~comercializador, name = 'Comercializador',
-                   type = 'scatter', mode = 'lines', line = list(width = 6))
-fig_ass <- fig_ass %>% add_trace(y = ~consumidor.livre, name = 'Consumidor Livre')
-fig_ass <- fig_ass %>% add_trace(y = ~distribuidor.de.gnc, name = 'Distribuidora de GNC')
-fig_ass <- fig_ass %>% add_trace(y = ~distribuidor.de.gnl, name = 'Distribuidora de GNL')
-fig_ass <- fig_ass %>% add_trace(y = ~distribuidora, name = 'Distribuidora Local de Gás Canalizado')
-fig_ass <- fig_ass %>% add_trace(y = ~produtor..boca.do.poço., name = 'Produtor (boca do poço)')
-fig_ass <- fig_ass %>% add_trace(y = ~outros, name = 'Outros')
+                   type = 'scatter', mode = 'lines', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_ass <- fig_ass %>% add_trace(y = ~consumidor.livre, name = 'Consumidor Livre', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_ass <- fig_ass %>% add_trace(y = ~distribuidor.de.gnc, name = 'Distribuidora de GNC', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_ass <- fig_ass %>% add_trace(y = ~distribuidor.de.gnl, name = 'Distribuidora de GNL', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_ass <- fig_ass %>% add_trace(y = ~distribuidora, name = 'Distribuidora Local de Gás Canalizado', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_ass <- fig_ass %>% add_trace(y = ~produtor..boca.do.poço., name = 'Produtor (boca do poço)', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_ass <- fig_ass %>% add_trace(y = ~outros, name = 'Outros', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[7]))
 
 fig_ass <- fig_ass %>% add_trace(ass , 
                                  x = ~ano, 
@@ -125,17 +124,18 @@ oferta_nacional$data <- lubridate::as_date(oferta_nacional$data, format = '%d-%m
 fig_ofertanac <- plotly::plot_ly(oferta_nacional,
                                  x = ~data,
                                  y = ~producao,
-                                 name = 'Produção', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~reinjecao, name = "Reinjeção")
-fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~queima_perda, name = "Queimas e Perdas")
-fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~consumo_EeP, name = "Consumo E & P")
-fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~absorcao_upgn, name = "Absorção nas UPGN's")
-fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~oferta_liquida, name = "Oferta Líquida")
+                                 name = 'Produção', type = 'scatter', mode = 'none', stackgroup = 'one', line = list(color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~reinjecao, name = "Reinjeção", line = list(color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~queima_perda, name = "Queimas e Perdas", line = list(color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~consumo_EeP, name = "Consumo E & P", line = list(color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~absorcao_upgn, name = "Absorção nas UPGN's", line = list(color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~oferta_liquida, name = "Oferta Líquida", line = list(color = brewer.pal(n = 8, name = "Dark2")[6]))
 fig_ofertanac <- fig_ofertanac %>%  plotly::layout(title = '',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
                                                    legend=list(title=list(text='<b> Fontes</b>'))) %>%
 layout(margin = list(l = 50, r = 50, b = 50, t = 50, pad = 10))
+fig_ofertanac
 
 ## Regulação 
 # Limite para Enquadramento como Consumidor Livre
@@ -204,9 +204,9 @@ fig_res_prod <- plotly::plot_ly(reservas_prod,
                                 y =~reservas_pl,
                                 name = "Reservas/Produção Líquida",
                                 type = 'scatter',
-                                mode = 'lines')
+                                mode = 'lines', line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_res_prod <- fig_res_prod %>% add_trace(y = ~reservas_pb,
-                                           name = 'Reservas/Produção Líquida')
+                                           name = 'Reservas/Produção Líquida', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_res_prod %>% plotly::layout(xaxis = list(title = 'Data'),
                                 yaxis = list(title = 'R/P (Ano)'),
                                 title = '')
@@ -292,17 +292,17 @@ fig_ofertaint<- plotly::plot_ly(oferta_int,
                                 name = 'Produção Bruta', 
                                 type = 'scatter', 
                                 mode = 'none', 
-                                stackgroup = 'one')
+                                stackgroup = 'one', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_ofertaint <- fig_ofertaint %>% add_trace (y = ~import, 
-                                              name = "Importação")
+                                              name = "Importação", line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_ofertaint <- fig_ofertaint %>% add_lines(y = ~oferta_interna, 
                                              name = 'Oferta Interna', 
                                              fill = 'none', 
-                                             stackgroup = 'two')
+                                             stackgroup = 'two', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[3]))
 fig_ofertaint <- fig_ofertaint %>% add_lines(y = ~reinj_perdas, 
                                              name = 'Reinjeção e Perdas', 
                                              fill = 'none', 
-                                             stackgroup = 'three')
+                                             stackgroup = 'three', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_ofertaint   <- fig_ofertaint   %>%  plotly::layout(title = '',
                                                        xaxis = list(title = 'Ano'),
                                                        yaxis = list (title = 'Volume em milhões de m³/dia'),

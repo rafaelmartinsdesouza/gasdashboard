@@ -7,6 +7,8 @@ library(tidyverse)
 library(mapview)
 library(leaflet)
 library(bslib)
+library(RColorBrewer)
+
 
 source("graficos.R")
 
@@ -149,7 +151,7 @@ ui <- navbarPage(
                
                tags$li(
                  p(class = "text-blue", 
-                   "Rafael Martins de Souza (", 
+                   "Rafael Martins de Souza (",
                    tags$a(href = "https://ceri.fgv.br/equipe/rafael-martins-de-souza", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/rafaelmartinsdesouza/", "LinkedIn", target = "_blank"),")."
                  )
