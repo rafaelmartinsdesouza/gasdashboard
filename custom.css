@@ -8,16 +8,75 @@
 
 /* Cor do texto na barra superior */
 .navbar-brand, .navbar-nav > li > a {
-  color: #001f3f !important; /* Texto branco na barra superior */
+    color:  #004080 !important; /* Texto branco na barra superior */
 }
 
 /* Estilo para o corpo do dashboard */
 body, .container-fluid {
-  background-color: #FFFFFF; /* Tom de azul mais claro para as demais partes */
+  background-color:  #ffffff; /* Tom de azul mais claro para as demais partes */
 }
 
 /* Estilo para os painéis e outras áreas */
 .panel, .well, .tab-content {
-  background-color: #ffffff; /* Fundo branco para painéis e áreas de conteúdo */
+  background-color:   #ffffff ; /* Fundo branco para painéis e áreas de conteúdo */
   border-color: #001f3f; /* Borda clara para painéis */
+}
+
+/* Estilo para texto azul */
+.text-blue {
+  color: #004080;
+}
+
+/* Estilo para texto vermelho */
+.text-red {
+  color: red;
+}
+
+/* Estilo para texto verde */
+.text-green {
+  color: green;
+}
+
+/* www/custom.css */
+
+/* Estilo para a barra de menus principal */
+.navbar {
+  background-color: #004080; /* Cor de fundo da barra de menus (Azul Marinho Claro) */
+  border-color: #003366;     /* Cor da borda da barra de menus */
+}
+
+/* Cor do texto nos itens de menu */
+.navbar-brand, .navbar-nav > li > a {
+  color:  #001f3f;!important; /* Cor branca para os textos dos itens de menu */
+}
+
+/* Cor do texto dos itens de menu ao passar o mouse */
+.navbar-nav > li > a:hover {
+  color: #ffcc00 !important; /* Cor amarela para os textos ao passar o mouse */
+}
+
+/* Cor de fundo do item de menu ativo */
+.navbar-nav > .active > a {
+  background-color: #002244 !important; /* Fundo azul escuro para o item ativo */
+  color: #ffffff !important; /* Texto branco para o item ativo */
+}
+
+
+
+/* Opcional: Fundo branco para painéis e áreas de conteúdo */
+.panel, .well, .tab-content {
+  background-color: #ffffff; /* Fundo branco para painéis e áreas de conteúdo */
+  border-color: #ddeeff;     /* Borda clara para painéis */
+}
+
+/* Fundo branco para todo o corpo da página */
+/* body, .container-fluid { */
+ background-color: #ffffff; /* Cor branca */
+  color: #333333; /* Cor do texto padrão (opcional) */
+}
+
+/* Estilo para a barra de menus principal */
+.navbar {
+  background-color: #004080; /* Cor de fundo da barra de menus (Azul Marinho Claro) */
+  border-color: #003366;     /* Cor da borda da barra de menus */
 }

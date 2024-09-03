@@ -131,7 +131,7 @@ fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~queima_perda, name = "Queimas
 fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~consumo_EeP, name = "Consumo E & P")
 fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~absorcao_upgn, name = "Absorção nas UPGN's")
 fig_ofertanac <- fig_ofertanac %>% add_trace (y = ~oferta_liquida, name = "Oferta Líquida")
-fig_ofertanac <- fig_ofertanac %>%  plotly::layout(title = 'Oferta Nacional',
+fig_ofertanac <- fig_ofertanac %>%  plotly::layout(title = '',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
                                                    legend=list(title=list(text='<b> Fontes</b>'))) %>%
@@ -177,7 +177,7 @@ fig_ofertaimp<- plotly::plot_ly(oferta_imp,
 
 fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~argentina, name = "Argentina")
 fig_ofertaimp <- fig_ofertaimp %>% add_trace (y = ~regaseificacao_gnl, name = "Regaseificação (GNL)")
-fig_ofertaimp <- fig_ofertaimp %>%  plotly::layout(title = 'Oferta Importada',
+fig_ofertaimp <- fig_ofertaimp %>%  plotly::layout(title = '',
                                                    xaxis = list(title = 'Ano'),
                                                    yaxis = list (title = 'Volume em m³/dia'),
                                                    legend=list(title=list(text='<b>Fontes</b>'))) %>%
@@ -192,6 +192,7 @@ fig_ofertaimp <- fig_ofertaimp %>%plotly::layout(annotations =
 )
 
 ### Reservas
+#Reservas Relativas
 reservas_prod <- read.csv2('reservas_prod.csv')
 reservas_prod$data <- as.character(reservas_prod$data)
 reservas_prod$data <- lubridate::as_date(reservas_prod$data, format = '%Y')
@@ -208,7 +209,7 @@ fig_res_prod <- fig_res_prod %>% add_trace(y = ~reservas_pb,
                                            name = 'Reservas/Produção Líquida')
 fig_res_prod %>% plotly::layout(xaxis = list(title = 'Data'),
                                 yaxis = list(title = 'R/P (Ano)'),
-                                title = 'Reservas Relativas')
+                                title = '')
 
 #### Petrobras
 #Produção por concessionários
@@ -626,6 +627,7 @@ fig_qdcdist <- fig_qdcdist %>%  plotly::layout(title ="",
                                                legend=list(title=list(text='<b> Distribuidora </b>'))) %>% layout(autosize = TRUE)
 
 ### Modalidades de Contratação
+#Quantidade Diária Contratada Média por Modalidade de Contratação
 qdc_mod<- read.csv2("qdc_mod.csv")
 qdc_mod$data <- str_replace_all(qdc_mod$data, "/", "-")
 qdc_mod$data <- lubridate::as_date(qdc_mod$data, format = '%d-%m-%Y')
@@ -636,7 +638,7 @@ fig_qdcmod <- plotly::plot_ly(qdc_mod,
                               name = 'Firme Inflexível', type = 'scatter', mode = 'none', stackgroup = 'one')
 fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~firme, name = "Firme")
 fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~interruptivel, name = "Interruptivel")
-fig_qdcmod <- fig_qdcmod %>%  plotly::layout(title = 'Quantidade Diária Contratada Média por Modalidade de Contratação',
+fig_qdcmod <- fig_qdcmod %>%  plotly::layout(title = '',
                                              xaxis = list(title = 'Ano'),
                                              yaxis = list (title = 'Volume em m³/dia'),
                                              legend=list(title=list(text='<b> Modalidade </b>'))) %>%

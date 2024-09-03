@@ -22,13 +22,13 @@ ui <- navbarPage(
            fluidPage(
              #h2("Contratos Vigentes"),
              tabsetPanel(
-               tabPanel("Contratos Vigentes", h3("Número total de contratos vigentes por ano"),
+               tabPanel("Contratos Vigentes", h3(class = "text-blue", "Número total de contratos vigentes por ano"),
                         plotlyOutput("grafico_vig")  # Onde o gráfico será exibido
                ),
-               tabPanel("Vigências por tipo de Comprador", h3("Vigências por tipo de comprador"),
+               tabPanel("Vigências por tipo de Comprador", h3(class = "text-blue", "Vigências por tipo de comprador"),
                         plotlyOutput("fig_vigc")  # Onde o gráfico será exibido
                ),   
-               tabPanel("Assinaturas", h3("Quantidade de contratos assinados por tipo de comprador"),
+               tabPanel("Assinaturas", h3(class = "text-blue", "Quantidade de contratos assinados por tipo de comprador"),
                         plotlyOutput("fig_ass")  # Onde o gráfico será exibido
                )
            ))),
@@ -38,7 +38,7 @@ ui <- navbarPage(
            fluidPage(
              #h2("Conteúdo da Página 2"),
              tabsetPanel(
-             tabPanel("Assinaturas", h3("Limite para Enquadramento como Consumidor Livre"),
+             tabPanel("Assinaturas", h3(class = "text-blue", "Limite para enquadramento como consumidor livre"),
                       plotlyOutput("fig_cl")  # Onde o gráfico será exibido
              )
              )
@@ -49,36 +49,36 @@ ui <- navbarPage(
            fluidPage(
              #h2("Conteúdo da Página 3"),
              tabsetPanel(
-               tabPanel("Oferta Nacional",
+               tabPanel("Oferta Nacional", h3(class = "text-blue", "Oferta nacional"),
                         plotlyOutput("fig_ofertanac")  # Onde o gráfico será exibido
                ),
-               tabPanel("Oferta Internacional",
+               tabPanel("Oferta Internacional", h3(class = "text-blue", " Oferta importada"),
                         plotlyOutput("fig_ofertaimp")  # Onde o gráfico será exibido
                ),
-               tabPanel("Reservas",
+               tabPanel("Reservas", h3(class = "text-blue", "Reservas relativas"),
                         plotlyOutput("fig_res_prod")  # Onde o gráfico será exibido
                ),
-               tabPanel("Produção", p("Produção de Petróleo e Gás Natural (2022)"),
+               tabPanel("Produção", h3(class = "text-blue", "Produção de petróleo e gás natural (2022)"),
                         fluidRow(
                           column(6, plotlyOutput("fig_teste")),   # Coloca o primeiro gráfico na metade esquerda
                           column(6, plotlyOutput("fig_teste1"))   # Coloca o segundo gráfico na metade direita
                         )),
-               tabPanel("Oferta Interna", p("Oferta Interna de Gás Natural"),
+               tabPanel("Oferta Interna", h3(class = "text-blue", "Oferta interna de gás natural"),
                         plotlyOutput("fig_ofertaint")  # Onde o gráfico será exibido
                ),
-               tabPanel("Demanda", p("Demanda por segmento de consumo"),
+               tabPanel("Demanda", h3(class = "text-blue", "Demanda por segmento de consumo"),
                         plotlyOutput("fig_demandaseg")  # Onde o gráfico será exibido
                ),
-               tabPanel("Demanda por distribuidora", p("Demanda por distribuidora (com termelétricas)"),
+               tabPanel("Demanda por distribuidora", h3(class = "text-blue", "Demanda por distribuidora (com termelétricas)"),
                         plotlyOutput("fig_demandist")  # Onde o gráfico será exibido
                ),
-               tabPanel("Consumo não termelétrico", p("Consumo por fonte"),
+               tabPanel("Consumo não termelétrico", h3(class = "text-blue", "Consumo por fonte"),
                         plotlyOutput("fig_consumo70")  # Onde o gráfico será exibido
                ),
-               tabPanel("Balanço Mensal", p("Balanço de Gás Nacional Mensal"),
+               tabPanel("Balanço Mensal", h3(class = "text-blue", "Balanço de gás nacional mensal"),
                         plotlyOutput("fig_balanco")  # Onde o gráfico será exibido
                ),
-               tabPanel("Balanço Anual", p("Balanço de Gás Nacional Anual"),
+               tabPanel("Balanço Anual", h3(class = "text-blue", "Balanço de gás nacional anual"),
                         plotlyOutput("fig_balanco_anual")  # Onde o gráfico será exibido
                )
              )
@@ -89,19 +89,19 @@ ui <- navbarPage(
            fluidPage(
              #h2("Conteúdo da Página 4"),
              tabsetPanel(
-               tabPanel("# Contratada por Região", p("Quantidade Contratada Diarimente por Região"),
+               tabPanel("Quantidade Contratada por Região", h3(class = "text-blue", "Quantidade contratada diarimente por região"),
                         plotlyOutput("fig_qdcreg")  # Onde o gráfico será exibido
                ),
-               tabPanel("# Contratada por UF", p("Quantidade Contratada Diarimente por UF"),
+               tabPanel("Quantidade Contratada por UF", h3(class = "text-blue", "Quantidade contratada diarimente por UF"),
                         plotlyOutput("fig_qdcuf")  # Onde o gráfico será exibido
                ),
-               tabPanel("Comercialização entre Produtores", p("Quantidade Diária Contratada por Fornecedor"),
+               tabPanel("Comercialização entre Produtores", h3(class = "text-blue", "Quantidade diária contratada por fornecedor"),
                         plotlyOutput("fig_qdcfor")  # Onde o gráfico será exibido
                ),
-               tabPanel("Contratação das Distribuidoras", p("Quantidade Média Diariamente Contratada por Modalidade de Contratação"),
+               tabPanel("Contratação das Distribuidoras", h3(class = "text-blue", "Quantidade média diariamente contratada por modalidade de contratação"),
                         plotlyOutput("fig_qdcdist")  # Onde o gráfico será exibido
                ),
-               tabPanel("Modalidades de Contratação", p("Quantidade Média Diariamente Contratada por Modalidade de Contratação"),
+               tabPanel("Modalidades de Contratação", h3(class = "text-blue", "Quantidade média diariamente contratada por modalidade de contratação"),
                         plotlyOutput("fig_qdcmod")  # Onde o gráfico será exibido
                ),
              )
@@ -112,10 +112,10 @@ ui <- navbarPage(
            fluidPage(
              #h2("Conteúdo da Página 4"), htmlOutput("map")
              tabsetPanel(
-               tabPanel("Áreas de Concessão", p("Áreas de concessão"),
+               tabPanel("Áreas de Concessão", h3(class = "text-blue", "Áreas de concessão"),
                         leafletOutput("map")
                ),
-            tabPanel("Extensão das Redes", p("Extensões das Redes de Transporte e Distribuição"),
+            tabPanel("Extensão das Redes", h3(class = "text-blue", "Extensões das redes de transporte e distribuição"),
                                  plotlyOutput("fig_ext")  # Onde o gráfico será exibido
                 ),
              )
@@ -124,40 +124,78 @@ ui <- navbarPage(
   # Página 5
   tabPanel("Sobre",
            fluidPage(
-             h2("Sobre este Dashboard"),
+             h3(class = "text-blue", "Sobre este dashboard"),
              
-             p("Este dashboard foi criado com o objetivo de apresentar dados sobre o mercado de gás no Brasil. Ele foi desenvolvido com o objetivo de promover a abertura do mercado de gás no Brasil e conta com uma série de patrocinadores."),
+             p(class = "text-blue", "Este dashboard foi criado com o objetivo de apresentar dados sobre o mercado de gás no Brasil. Ele foi desenvolvido com o objetivo de promover a abertura do mercado de gás no Brasil e conta com uma série de patrocinadores."),
              
-             p("Informações sobre os autores podem ser encontradas em:"),
+             p(class = "text-blue","Informações sobre os autores podem ser encontradas em:"),
                
-              p(" - [Joisa Dutra](https://www.linkedin.com/in/joisa-dutra-saraiva-429b735b/);"),
+             tags$ul(
+               tags$li(
+                 p(class = "text-blue", 
+                   "Joisa Dutra (", 
+                   tags$a(href = "https://www.linkedin.com/in/joisa-dutra-saraiva-429b735b/", "LinkedIn", target = "_blank"), ");"
+                 )
+               ),
+               
+               tags$li(
+                 p(class = "text-blue", 
+                   "Diogo Romeiro (", 
+                   tags$a(href = "https://www.linkedin.com/in/diogo-lisbona-romeiro-913819252/", "LinkedIn", target = "_blank"), ");"
+                 )
+               ),
+               
+               tags$li(
+                 p(class = "text-blue", 
+                   "Rafael Martins de Souza (", 
+                   tags$a(href = "https://www.linkedin.com/in/rafaelmartinsdesouza/", "LinkedIn", target = "_blank"), ")."
+                 )
+               )
+             ),
              
-             p("- [Diogo Romeiro](https://www.linkedin.com/in/diogo-lisbona-romeiro-913819252/);"),
+             p(class = "text-blue", 
+               "Ele também contou com a participação dos seguintes bolsistas de pesquisa."
+             ),
              
-             p("- [Rafael Martins de Souza](https://www.linkedin.com/in/rafaelmartinsdesouza/)."),
+             tags$ul(
+               tags$li(
+                 p(class = "text-blue", 
+                   "Ícaro Hernandes (", 
+                   tags$a(href = "https://www.linkedin.com/in/icaro-franco-hernandes/", "LinkedIn", target = "_blank"), ");"
+                 )
+               ),
+               
+               tags$li(
+                 p(class = "text-blue", 
+                   "Daniel Almeida (", 
+                   tags$a(href = "https://www.linkedin.com/in/daniel-de-miranda-almeida/", "LinkedIn", target = "_blank"), ");"
+                 )
+               ),
+               
+               tags$li(
+                 p(class = "text-blue", 
+                   "Rachel Granville (", 
+                   tags$a(href = "https://www.linkedin.com/in/rachelgranville/", "LinkedIn", target = "_blank"), ")."
+                 )
+               )
+             ),
              
-             p("Ele também contou com a participação dos seguintes bolsistas de pesquisa."),
+             h3(class = "text-blue", "Sobre o FGV CERI"),
              
-             p("Ícaro Hernandes(https://www.linkedin.com/in/icaro-franco-hernandes/);"),
+             p(class = "text-blue", "FGV CERI colabora com o desenvolvimento da regulação econômica no Brasil se valendo de sólidos fundamentos econômicos."),
              
-             p("Daniel Almeida(https://www.linkedin.com/in/daniel-de-miranda-almeida/);"),
-             
-             p("Rachel Granville(https://www.linkedin.com/in/rachelgranville/)."),
-             
-             
-             h2("Sobre o FGV CERI"),
-             
-             p("FGV CERI colabora com o desenvolvimento da regulação econômica no Brasil se valendo de sólidos fundamentos econômicos."),
-             
-             p("O Centro de Estudos em Regulação e Infraestrutura é a unidade da Fundação Getulio Vargas destinada a pensar, de forma estruturada e com sólidos fundamentos econômicos, a regulação dos setores de infraestrutura no Brasil."),
+             p(class = "text-blue", "O Centro de Estudos em Regulação e Infraestrutura é a unidade da Fundação Getulio Vargas destinada a pensar, de forma estruturada e com sólidos fundamentos econômicos, a regulação dos setores de infraestrutura no Brasil."),
 
-            p("O caráter multidisciplinar da regulação coloca essa instituição em condição privilegiada para contribuir para o desenvolvimento e o fortalecimento da regulação no País."),
+             p(class = "text-blue", "O caráter multidisciplinar da regulação coloca essa instituição em condição privilegiada para contribuir para o desenvolvimento e o fortalecimento da regulação no País."),
             
-            p("A regulação tem um papel central na atração de investimentos. Além disso, é protagonista na criação de um ambiente propício para que esses investimentos sejam convertidos em serviços de qualidade a preços competitivos, mas também capazes de garantir a sustentabilidade econômico-financeira de seus prestadores e refletir a alocação de riscos na cadeia de fornecimento."),
+             p(class = "text-blue", "A regulação tem um papel central na atração de investimentos. Além disso, é protagonista na criação de um ambiente propício para que esses investimentos sejam convertidos em serviços de qualidade a preços competitivos, mas também capazes de garantir a sustentabilidade econômico-financeira de seus prestadores e refletir a alocação de riscos na cadeia de fornecimento."),
             
-            p("O FGV CERI compreende os desafios e as oportunidades inerentes ao desenvolvimento dos setores de infraestrutura no Brasil. Por meio de seminários, palestras e encontros realizados por todo o país, do contato com especialistas e imprensa, e da publicação de estudos e resultados de pesquisas aplicadas, apresenta alternativas para problemas-chave e fomenta o debate com as diversas vozes da opinião pública, contribuindo, assim, para o desenvolvimento nacional."),
+             p(class = "text-blue", "O FGV CERI compreende os desafios e as oportunidades inerentes ao desenvolvimento dos setores de infraestrutura no Brasil. Por meio de seminários, palestras e encontros realizados por todo o país, do contato com especialistas e imprensa, e da publicação de estudos e resultados de pesquisas aplicadas, apresenta alternativas para problemas-chave e fomenta o debate com as diversas vozes da opinião pública, contribuindo, assim, para o desenvolvimento nacional."),
             
-            p("Mais informações pode ser encontradas em https://ceri.fgv.br/sobre.")
+             p(class = "text-blue", 
+               "Mais informações podem ser encontradas em ", 
+               tags$a(href = "https://ceri.fgv.br/sobre", "https://ceri.fgv.br/sobre", target = "_blank")
+             )
 )))
 
 server <- function(input, output) {
