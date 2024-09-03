@@ -134,13 +134,15 @@ ui <- navbarPage(
                tags$li(
                  p(class = "text-blue", 
                    "Joisa Dutra (", 
+                   tags$a(href = "https://ceri.fgv.br/equipe/joisa-dutra", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/joisa-dutra-saraiva-429b735b/", "LinkedIn", target = "_blank"), ");"
                  )
                ),
                
                tags$li(
                  p(class = "text-blue", 
-                   "Diogo Romeiro (", 
+                   "Diogo Romeiro (",
+                   tags$a(href = "https://ceri.fgv.br/equipe/diogo-lisbona-romeiro", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/diogo-lisbona-romeiro-913819252/", "LinkedIn", target = "_blank"), ");"
                  )
                ),
@@ -148,6 +150,7 @@ ui <- navbarPage(
                tags$li(
                  p(class = "text-blue", 
                    "Rafael Martins de Souza (", 
+                   tags$a(href = "https://ceri.fgv.br/equipe/rafael-martins-de-souza", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/rafaelmartinsdesouza/", "LinkedIn", target = "_blank"), ")."
                  )
                )
@@ -160,21 +163,24 @@ ui <- navbarPage(
              tags$ul(
                tags$li(
                  p(class = "text-blue", 
-                   "Ícaro Hernandes (", 
+                   "Ícaro Hernandes (",
+                   tags$a(href = "https://ceri.fgv.br/equipe/icaro-franco-hernandes", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/icaro-franco-hernandes/", "LinkedIn", target = "_blank"), ");"
                  )
                ),
                
                tags$li(
                  p(class = "text-blue", 
-                   "Daniel Almeida (", 
+                   "Daniel Almeida (",
+                   tags$a(href = "https://ceri.fgv.br/equipe/daniel-de-miranda-almeida", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/daniel-de-miranda-almeida/", "LinkedIn", target = "_blank"), ");"
                  )
                ),
                
                tags$li(
                  p(class = "text-blue", 
-                   "Rachel Granville (", 
+                   "Rachel Granville (",
+                   tags$a(href = "https://ceri.fgv.br/equipe/rachel-granville-garcia-leal", "FGV CERI", target = "_blank"), ", ", 
                    tags$a(href = "https://www.linkedin.com/in/rachelgranville/", "LinkedIn", target = "_blank"), ")."
                  )
                )
