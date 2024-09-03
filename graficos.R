@@ -671,12 +671,12 @@ fig_ext <- plotly::plot_ly(ext_rede,
                            x = ~ano, 
                            y = ~transport,
                            name = 'Transporte',
-                           type = 'scatter', mode = 'lines', line = list(width = 6))
+                           type = 'scatter', mode = 'lines', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
 
 fig_ext <- fig_ext %>% plotly::add_trace(y = ~distribuicao, 
                                          name = 'Distribuição', 
                                          mode = 'lines', 
-                                         line = list(width = 6)) 
+                                         line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_ext <- fig_ext %>% plotly::layout(title = '',
                                       xaxis = list(title = 'Ano'),
                                       yaxis = list (title = 'Quilômetros')
