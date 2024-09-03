@@ -510,28 +510,28 @@ fig_balanco<- plotly::plot_ly(balanco,
                               mode = 'none', 
                               stackgroup = 'one',
                               legendgroup = 'group1',
-                              line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
+                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_balanco<- fig_balanco %>% add_trace (y = ~oferta_boliviana, 
                                          name = "Bolívia",
                                          legendgroup = 'group1',
-                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
+                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_balanco<- fig_balanco %>% add_trace (y = ~gnl, 
                                          name = "GNL",
                                          legendgroup = 'group1',
-                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
+                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
 #se quando eu não quiser empilhar é so colocar em outro stackgroup
 fig_balanco <- fig_balanco %>% add_lines(y = ~perdas_ajustes, 
                                          name = 'Perdas e Ajustes', 
                                          fill = 'none', 
                                          stackgroup = 'two',
                                          legendgroup = 'group2',
-                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
+                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_balanco <- fig_balanco %>% add_lines(y = ~demanda_nt, 
                                          name = 'Demanda Não Termelétrica', 
                                          fill = 'none', 
                                          stackgroup = 'two',
                                          legendgroup = 'group2',
-                                         line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
+                                         line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_balanco  <- fig_balanco  %>%  plotly::layout(title = '',
                                                  xaxis = list(title = 'Ano'),
                                                  yaxis = list (title = 'Volume em milhões de m³/dia'),
@@ -551,15 +551,18 @@ fig_balanco_anual<- plotly::plot_ly(balanco_anual,
                                     mode = 'none', 
                                     stackgroup = 'one',
                                     legendgroup = 'group1',
-                                    line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[1]))
+                                    line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+
 fig_balanco_anual<- fig_balanco_anual %>% add_trace (y = ~oferta_bolivia, 
                                                      name = "Bolívia",
                                                      legendgroup = 'group1',
-                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[2]))
+                                                     line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+
 fig_balanco_anual<- fig_balanco_anual %>% add_trace (y = ~gnl, 
                                                      name = "GNL",
                                                      legendgroup = 'group1',
-                                                     line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[3]))
+                                                     line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+
 #se quando eu não quiser empilhar é so colocar em outro stackgroup
 fig_balanco_anual <- fig_balanco_anual %>% add_lines(y = ~perdas_ajustes, 
                                                      name = 'Perdas e Ajustes', 
@@ -567,12 +570,14 @@ fig_balanco_anual <- fig_balanco_anual %>% add_lines(y = ~perdas_ajustes,
                                                      stackgroup = 'two',
                                                      legendgroup = 'group2',
                                                      line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[4]))
+
 fig_balanco_anual <- fig_balanco_anual %>% add_lines(y = ~demanda_nt, 
                                                      name = 'Demanda Não Termelétrica', 
                                                      fill = 'none', 
                                                      stackgroup = 'two',
                                                      legendgroup = 'group2',
                                                      line = list(width = 6, color = brewer.pal(n = 8, name = "Dark2")[5]))
+
 fig_balanco_anual  <- fig_balanco_anual  %>%  plotly::layout(title = '',
                                                              xaxis = list(title = 'Ano'),
                                                              yaxis = list (title = 'Volume em milhões de m³/dia'),
@@ -590,10 +595,14 @@ qdc_reg %>% dplyr::filter(data >= "2024-01-01")-> qdc_reg
 fig_qdcreg <- plotly::plot_ly(qdc_reg,
                               x = ~data,
                               y = ~sudeste,
-                              name = 'Sudeste', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_qdcreg <- fig_qdcreg %>% add_trace (y = ~sul, name = "Sul")
-fig_qdcreg <- fig_qdcreg %>% add_trace(y = ~nordeste, name = "Nordeste")
-fig_qdcreg <- fig_qdcreg %>% add_trace(y = ~centrooeste, name = "Centro-Oeste")
+                              name = 'Sudeste', type = 'scatter', mode = 'none', stackgroup = 'one',
+                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcreg <- fig_qdcreg %>% add_trace (y = ~sul, name = "Sul",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcreg <- fig_qdcreg %>% add_trace(y = ~nordeste, name = "Nordeste",
+                                       line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcreg <- fig_qdcreg %>% add_trace(y = ~centrooeste, name = "Centro-Oeste",
+                                       line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
 fig_qdcreg <- fig_qdcreg %>%  plotly::layout(title = '',
                                              xaxis = list(title = 'Ano'),
                                              yaxis = list (title = 'Volume em m³/dia'),
@@ -608,6 +617,7 @@ fig_qdcreg <- fig_qdcreg %>% plotly::layout(annotations = list(x = 0,
 ))
 
 ### QDC contratada por Estado
+# QUANTIDADE CONTRATADA POR UF
 qdc_uf<- read.csv2("qdc_uf.csv")
 qdc_uf$data <- stringr::str_replace_all(qdc_uf$data, "/", "-")
 qdc_uf$data <- lubridate::as_date(qdc_uf$data, format = '%d-%m-%Y')
@@ -615,21 +625,36 @@ qdc_uf %>% dplyr::filter(data >= "2024-01-01")-> qdc_uf
 fig_qdcuf <- plotly::plot_ly(qdc_uf,
                              x = ~data,
                              y = ~SP,
-                             name = 'São Paulo', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RJ, name = "Rio de Janeiro")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~ES, name = "Espírito Santo")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~MG, name = "Minas Gerais")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PR, name = "Paraná")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~SC, name = "Santa Catarina")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RS, name = "Rio Grande do Sul")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~BA, name = "Bahia")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~CE, name = "Ceará")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PB, name = "Paraíba")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PE, name = "Pernambuco")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~AL, name = "Alagoas")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~SE, name = "Sergipe")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RN, name = "Rio Grande do Norte")
-fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~MS, name = "Mato Grosso do Sul")
+                             name = 'São Paulo', type = 'scatter', mode = 'none', stackgroup = 'one',
+                             line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RJ, name = "Rio de Janeiro",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~ES, name = "Espírito Santo",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~MG, name = "Minas Gerais",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PR, name = "Paraná",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~SC, name = "Santa Catarina",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RS, name = "Rio Grande do Sul",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~BA, name = "Bahia",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~CE, name = "Ceará",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PB, name = "Paraíba",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~PE, name = "Pernambuco",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~AL, name = "Alagoas",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~SE, name = "Sergipe",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~RN, name = "Rio Grande do Norte",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]), dash = 'dash')
+fig_qdcuf <- fig_qdcuf %>% add_trace (y = ~MS, name = "Mato Grosso do Sul",
+                                      line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]), dash = 'dash')
 fig_qdcuf <- fig_qdcuf %>%  plotly::layout(title = '',
                                            xaxis = list(title = 'Ano'),
                                            yaxis = list (title = 'Volume em m³/dia'),
@@ -650,19 +675,32 @@ qdc_for %>%
 fig_qdcfor <- plotly::plot_ly(qdc_for,
                               x = ~date,
                               y = ~petrobras,
-                              name = 'Petrobrás', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Alvopetro, name = "Alvopetro")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Compass, name = "Compass")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~ERG, name = "ERG")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Eagle, name = "Eagle")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Equinor, name = "GALP")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~NFE, name = "NFE")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Origem, name = "Origem")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~tresR, name = "3R")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Petroreconcavo, name = "Petrorecôncavo")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Potiguar, name = "Potiguar")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Shell, name = "Shell")
-fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Tradener, name = "Tradener")
+                              name = 'Petrobrás', type = 'scatter', mode = 'none', stackgroup = 'one',
+                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Alvopetro, name = "Alvopetro",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Compass, name = "Compass",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~ERG, name = "ERG",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Eagle, name = "Eagle",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Equinor, name = "GALP",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~NFE, name = "NFE",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Origem, name = "Origem",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~tresR, name = "3R",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Petroreconcavo, name = "Petrorecôncavo",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Potiguar, name = "Potiguar",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Shell, name = "Shell",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_qdcfor <- fig_qdcfor %>% add_trace (y = ~Tradener, name = "Tradener",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
 fig_qdcfor <- fig_qdcfor %>% plotly::layout(title = '',
                                             xaxis = list(title = 'Ano'),
                                             yaxis = list (title = 'Volume em m³/dia'))
@@ -677,24 +715,42 @@ qdc_dist %>% dplyr::filter(data >= "2024-01-01")-> qdc_dist
 fig_qdcdist <- plotly::plot_ly(qdc_dist,
                                x = ~data,
                                y = ~comgas,
-                               name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~CEG, name = "CEG")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~scgas, name = "SC Gás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~gasmig, name = "Gasmig")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~CEG.RIO, name = "CEG Rio")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~esgas, name = "ES Gás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~bahiagas, name = "Bahiagás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~copergas, name = "CoperGás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~sulgas, name = "Sulgás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~naturgy, name = "Naturgy SP")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~compagas, name = "Compagás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~cegas, name = "Cegás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~necta, name = "Necta")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~msgas, name = "MS Gás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~sergas, name = "Sergás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~pbgas, name = "PBGás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~algas, name = "Algás")
-fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~potigas, name = "Potigás")
+                               name = 'Comgás', type = 'scatter', mode = 'none', stackgroup = 'one',
+                               line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~CEG, name = "CEG",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~scgas, name = "SC Gás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~gasmig, name = "Gasmig",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~CEG.RIO, name = "CEG Rio",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~esgas, name = "ES Gás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~bahiagas, name = "Bahiagás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~copergas, name = "CoperGás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~sulgas, name = "Sulgás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~naturgy, name = "Naturgy SP",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~compagas, name = "Compagás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~cegas, name = "Cegás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[4]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~necta, name = "Necta",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[5]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~msgas, name = "MS Gás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[6]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~sergas, name = "Sergás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[7]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~pbgas, name = "PBGás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[8]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~algas, name = "Algás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcdist <- fig_qdcdist %>% add_trace (y = ~potigas, name = "Potigás",
+                                          line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
 fig_qdcdist <- fig_qdcdist %>%  plotly::layout(title ="",
                                                xaxis = list(title = 'Ano'),
                                                yaxis = list (title = 'Volume em m³/dia'),
@@ -709,14 +765,18 @@ qdc_mod %>% dplyr::filter(data >= "2024-01-01")-> qdc_mod
 fig_qdcmod <- plotly::plot_ly(qdc_mod,
                               x = ~data,
                               y = ~firme.inflexivel,
-                              name = 'Firme Inflexível', type = 'scatter', mode = 'none', stackgroup = 'one')
-fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~firme, name = "Firme")
-fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~interruptivel, name = "Interruptivel")
+                              name = 'Firme Inflexível', type = 'scatter', mode = 'none', stackgroup = 'one',
+                              line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[1]))
+fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~firme, name = "Firme",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[2]))
+fig_qdcmod <- fig_qdcmod %>% add_trace (y = ~interruptivel, name = "Interruptivel",
+                                        line = list(width = 2, color = brewer.pal(n = 8, name = "Dark2")[3]))
 fig_qdcmod <- fig_qdcmod %>%  plotly::layout(title = '',
                                              xaxis = list(title = 'Ano'),
                                              yaxis = list (title = 'Volume em m³/dia'),
                                              legend=list(title=list(text='<b> Modalidade </b>'))) %>%
   layout(autosize = TRUE)
+fig_qdcmod
 
 
 
@@ -745,8 +805,8 @@ fig_ext <- plotly::plot_ly(ext_rede,
                            x = ~ano, 
                            y = ~transport,
                            name = 'Transporte',
-                           type = 'scatter', mode = 'lines', line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
-
+                           type = 'scatter', mode = 'lines', 
+                           line = list(width = 6,color = brewer.pal(n = 8, name = "Dark2")[1]))
 fig_ext <- fig_ext %>% plotly::add_trace(y = ~distribuicao, 
                                          name = 'Distribuição', 
                                          mode = 'lines', 
@@ -759,9 +819,3 @@ fig_ext <- fig_ext %>% plotly::layout(title = '',
                                       #margin= m
 ) %>%
   layout(autosize = TRUE)
-
-
-
-
-
-
