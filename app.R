@@ -8,10 +8,23 @@ library(mapview)
 library(leaflet)
 library(bslib)
 library(RColorBrewer)
+library(googlesheets4)
+library(tidyverse)
 
 
+#=============================================================================
+# Imports das abas da calculadora.
+# Importando calculadora de tarifas.
+source("calculadora_tarifas/ui.R")
+source("calculadora_tarifas/server.R")
+
+
+#=============================================================================
+# Importando gráficos.
 source("graficos.R")
 
+
+#=============================================================================
 # Defina a interface do usuário (UI)
 ui <- navbarPage(
   #theme = shinytheme("cerulean"),  # Escolha um tema base
@@ -25,7 +38,7 @@ ui <- navbarPage(
              #h2("Contratos Vigentes"),
              tabsetPanel(
                tabPanel("Contratos Vigentes", h3(class = "text-blue", "Número total de contratos vigentes por ano"),
-                        plotlyOutput("grafico_vig")  # Onde o gráfico será exibido
+                        plotlyOutput('grafico_vig')  # Onde o gráfico será exibido
                ),
                tabPanel("Vigências por tipo de Comprador", h3(class = "text-blue", "Vigências por tipo de comprador"),
                         plotlyOutput("fig_vigc")  # Onde o gráfico será exibido
@@ -33,16 +46,16 @@ ui <- navbarPage(
                tabPanel("Assinaturas", h3(class = "text-blue", "Quantidade de contratos assinados por tipo de comprador"),
                         plotlyOutput("fig_ass")  # Onde o gráfico será exibido
                )
-           ))),
+             ))),
   
   # Regulação
   tabPanel("Regulação",
            fluidPage(
              #h2("Conteúdo da Página 2"),
              tabsetPanel(
-             tabPanel("Assinaturas", h3(class = "text-blue", "Limite para enquadramento como consumidor livre"),
-                      plotlyOutput("fig_cl")  # Onde o gráfico será exibido
-             )
+               tabPanel("Assinaturas", h3(class = "text-blue", "Limite para enquadramento como consumidor livre"),
+                        plotlyOutput("fig_cl")  # Onde o gráfico será exibido
+               )
              )
            )),
   
@@ -117,11 +130,11 @@ ui <- navbarPage(
                tabPanel("Áreas de Concessão", h3(class = "text-blue", "Áreas de concessão"),
                         leafletOutput("map")
                ),
-            tabPanel("Extensão das Redes", h3(class = "text-blue", "Extensões das redes de transporte e distribuição"),
-                                 plotlyOutput("fig_ext")  # Onde o gráfico será exibido
-                ),
+               tabPanel("Extensão das Redes", h3(class = "text-blue", "Extensões das redes de transporte e distribuição"),
+                        plotlyOutput("fig_ext")  # Onde o gráfico será exibido
+               ),
              )
-          )),
+           )),
   
   # Página 5
   tabPanel("Sobre",
@@ -131,7 +144,7 @@ ui <- navbarPage(
              p(class = "text-blue", "Este dashboard foi criado com o objetivo de apresentar dados sobre o mercado de gás no Brasil. Ele foi desenvolvido com o objetivo de promover a abertura do mercado de gás no Brasil e conta com uma série de patrocinadores."),
              
              p(class = "text-blue","Informações sobre os autores podem ser encontradas em:"),
-               
+             
              tags$ul(
                tags$li(
                  p(class = "text-blue", 
@@ -193,21 +206,26 @@ ui <- navbarPage(
              p(class = "text-blue", "FGV CERI colabora com o desenvolvimento da regulação econômica no Brasil se valendo de sólidos fundamentos econômicos."),
              
              p(class = "text-blue", "O Centro de Estudos em Regulação e Infraestrutura é a unidade da Fundação Getulio Vargas destinada a pensar, de forma estruturada e com sólidos fundamentos econômicos, a regulação dos setores de infraestrutura no Brasil."),
-
+             
              p(class = "text-blue", "O caráter multidisciplinar da regulação coloca essa instituição em condição privilegiada para contribuir para o desenvolvimento e o fortalecimento da regulação no País."),
-            
+             
              p(class = "text-blue", "A regulação tem um papel central na atração de investimentos. Além disso, é protagonista na criação de um ambiente propício para que esses investimentos sejam convertidos em serviços de qualidade a preços competitivos, mas também capazes de garantir a sustentabilidade econômico-financeira de seus prestadores e refletir a alocação de riscos na cadeia de fornecimento."),
-            
+             
              p(class = "text-blue", "O FGV CERI compreende os desafios e as oportunidades inerentes ao desenvolvimento dos setores de infraestrutura no Brasil. Por meio de seminários, palestras e encontros realizados por todo o país, do contato com especialistas e imprensa, e da publicação de estudos e resultados de pesquisas aplicadas, apresenta alternativas para problemas-chave e fomenta o debate com as diversas vozes da opinião pública, contribuindo, assim, para o desenvolvimento nacional."),
-            
+             
              p(class = "text-blue", 
                "Mais informações podem ser encontradas em ", 
                tags$a(href = "https://ceri.fgv.br/sobre", "https://ceri.fgv.br/sobre", target = "_blank")
              )
-)))
+           )
+  ),
+  # Calculadora de tarifas.
+  calculadora_tarifas_ui("tarifas_module")
+)
 
-server <- function(input, output) {
-  
+#=============================================================================
+# Servidor.
+server <- function(input, output, session) {
   # Renderize o gráfico na primeira página, opção 1
   output$grafico_vig <- plotly::renderPlotly({
     fig_vig
@@ -267,7 +285,7 @@ server <- function(input, output) {
   output$fig_demandist <- plotly::renderPlotly({
     fig_demandist
   })
-
+  
   # Renderize o gráfico na primeira página, opção 1
   output$fig_demandist_st <- plotly::renderPlotly({
     fig_demandist_st
@@ -328,7 +346,13 @@ server <- function(input, output) {
   output$fig_ext <- plotly::renderPlotly({
     fig_ext
   })
+  
+  #=============================================================================
+  # Calculadora de tarifas.
+  calculadora_tarifas_server("tarifas_module")
 }
 
+
+#=============================================================================
 # Execute o aplicativo
-shinyApp(ui = ui, server = server)
+shinyApp(ui, server)
