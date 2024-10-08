@@ -1,13 +1,10 @@
-library(shiny)
+library(plotly)
+library(readxl)
+library(openxlsx)
 
 #=============================================================================
-# Autenticação para acesso das planilhas.
-gs4_auth(
-  path = "credentials/secret-key.json"
-)
-
-# URL pra acesso da planilha.
-sheet_url = "https://docs.google.com/spreadsheets/d/1Lz4iTpRntvk_eJst-eWjX5TIOk2XkSZ1kGSj2puu6zo/edit?usp=sharing"
+# Acesso da planilha com readxl.
+path = "../calculadora_data/Calculadora_V4.xlsx"
 
 
 #=============================================================================
@@ -27,21 +24,23 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
   
   # Atualizando células de input.
   # Input da classe de consumo.
-  sheet_url %>% range_write(data = data.frame(valor_classe),
-                            sheet = 2,
-                            range = "D1",
-                            col_names = FALSE)
-  # Input da classe do nível de consumo mensal.
-  sheet_url %>% range_write(data = data.frame(valor_nivel),
-                            sheet = 2,
-                            range = "E6",
-                            col_names = FALSE)
+  # Carregando arquivo.
+  wb <- loadWorkbook(path)
+  
+  # Colocando valores dos campos de input.
+  writeData(wb, sheet = 2, x = valor_classe, startCol = 4, startRow = 1)
+  writeData(wb, sheet = 2, x = valor_nivel, startCol = 6, startRow = 6)
+  
+  # Salvando alterações.
+  saveWorkbook(wb, path, overwrite = TRUE)
   
   # Lendo retorno da calculadora.
-  df <- read_sheet(sheet_url,
+  df <- read_excel(path,
                    sheet = 2,
                    range = "B9:E27",
                    col_names = c("Distribuidora", "Tarifa", "Estado", "Regiao"))
+  print("df")
+  print(df)
   
   # Transformando nome das regiões de abreviação para o nome real.
   map_regioes <- c(
@@ -86,10 +85,10 @@ calculadora_tarifas_server <- function(id) {
         y = ~Tarifa,
         color = ~Regiao,
         type = "bar",
-        text = ~paste0(sprintf("%.2f", Tarifa)),
+        # text = ~ifelse(is.numeric(Tarifa), paste0(sprintf("%.2f", Tarifa)), "NA"),
         textposition = "outside") %>%
         layout(
-          title = paste("Tarifa por distribuidora <br><sup>em R$/m³</sup>", sep = ""),
+          title = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
           xaxis = list(
             title = list(
               text = "Distribuidora",
