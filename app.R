@@ -10,7 +10,7 @@ library(bslib)
 library(RColorBrewer)
 library(googlesheets4)
 library(tidyverse)
-library(openxslx)
+library(openxlsx)
 
 
 #=============================================================================
