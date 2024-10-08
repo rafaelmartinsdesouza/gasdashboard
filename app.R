@@ -10,6 +10,8 @@ library(bslib)
 library(RColorBrewer)
 library(googlesheets4)
 library(tidyverse)
+
+if (!require(openxlsx)) install.packages("openxlsx")
 library(openxlsx)
 
 
