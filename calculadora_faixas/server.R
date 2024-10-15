@@ -25,7 +25,7 @@ credenciais <- list(
 credenciais_temp_path <- tempfile(fileext = ".json")
 write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
 
-# Autenticcando com esse arquivo temporário.
+# Autenticando com esse arquivo temporário.
 gs4_auth(path = credenciais_temp_path)
 
 #=============================================================================

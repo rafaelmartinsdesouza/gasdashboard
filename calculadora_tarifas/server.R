@@ -25,9 +25,8 @@ credenciais <- list(
 credenciais_temp_path <- tempfile(fileext = ".json")
 write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
 
-# Autenticcando com esse arquivo temporário.
+# Autenticando com esse arquivo temporário.
 gs4_auth(path = credenciais_temp_path)
-
 
 # URL pra acesso da planilha.
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
