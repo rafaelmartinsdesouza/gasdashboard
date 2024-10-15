@@ -1,207 +1,185 @@
-#=============================================================================
-# Acesso da planilha com readxl.
-path = "/calculadora_data/Calculadora_V4.xlsx"
+library(shiny)
+library(googlesheets4)
+library(jsonlite)
 
-#===============================================================================
-# Servidor
-# Função que busca dados para tarifas das distribuidoras.
-get_dados_tarifas <- function(valor_classe, valor_nivel){
-  # Função que adquire os dados do Google Sheets.
+#=============================================================================
+# Autenticação para acesso das planilhas.
+
+# Transformando as credenciais salvas como variávies de ambiete em uma lista.
+credenciais <- list(
+  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
+  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
+  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
+  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
+  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
+  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
+  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
+  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
+  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
+  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
+  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
+)
+
+# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
+# tender.
+credenciais_temp_path <- tempfile(fileext = ".json")
+write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
+
+# Autenticcando com esse arquivo temporário.
+gs4_auth(path = credenciais_temp_path)
+
+#=============================================================================
+# Função de obtenção dos dados.
+obter_dados_estrutura <- function(nome_distribuidora) {
+  # Lendo aba da distribuidora recebida.
+  df <- range_read(sheet_url, sheet = nome_distribuidora)
   
-  # Alterando string para respectivo valor de classe de consumo.
-  # Vetor que funciona como dicionário.
-  map_classes <- c(
-    "residencial" = 1,
-    "industrial" = 2,
-    "comercial" = 3
-  )
-  # Convertendo classe recebida na função.
-  valor_classe <- map_classes[valor_classe]
+  # Definindo primeira linha do df inicial como novas colunas.
+  novos_nomes_colunas <- as.character(df[1, ])
   
-  # Atualizando células de input.
-  # Input da classe de consumo.
-  sheet_url %>% range_write(data = data.frame(valor_classe),
-                            sheet = 2,
-                            range = "D1",
-                            col_names = FALSE)
-  # Input da classe do nível de consumo mensal.
-  sheet_url %>% range_write(data = data.frame(valor_nivel),
-                            sheet = 2,
-                            range = "E6",
-                            col_names = FALSE)
+  # Adicionando nome para coluna com categoria da tarifa e retirando coluna com nome vazio.
+  novos_nomes_colunas <- c("Categoria_consumo", novos_nomes_colunas[-1])
+  colnames(df) <- novos_nomes_colunas
   
-  # Lendo retorno da calculadora.
-  df <- read_sheet(sheet_url,
-                   sheet = 2,
-                   range = "B9:E27",
-                   col_names = c("Distribuidora", "Tarifa", "Estado", "Regiao"))
+  # Retirando primeira linha do df.
+  df <- df[-1, ]
   
-  # Transformando nome das regiões de abreviação para o nome real.
-  map_regioes <- c(
-    "SE" = "Sudeste",
-    "N" = "Norte",
-    "NE" = "Nordeste",
-    "S" = "Sul",
-    "CO" = "Centro-oeste"
-  )
+  # Retirando linhas que não são dados.
+  indice_fim <- which(df$Categoria_consumo == "Dados acabam aqui")
+  df <- df[1:(indice_fim - 2), ]
+  
+  # Limpando nomes das coluna retirando o 'list(\"...\")'.
+  nomes_limpos <- gsub("list\\(\"(.*?)\"\\)", "\\1", names(df))
+  
+  # Retirando \ e tudo pra frente dele nos nomes.
+  nomes_limpos <- gsub("\\\\.*", "", nomes_limpos)
+  
+  # Colocando nomes das colunas limpos nas colunas do dataframe.
+  names(df) <- nomes_limpos
+  
+  # Renomeando colunas que vamos usar, com exceção da coluna de Parte Fixa que ainda
+  # não temos qual a correta.
+  colnames(df)[colnames(df) == "Tarifa com tributos (R$/m³)"] <- 'Tarifa_tributos'
+  colnames(df)[colnames(df) == "Faixa Inicial"] <- 'Faixa_inicial'
+  colnames(df)[colnames(df) == "Faixa Final"] <- 'Faixa_final'
+  
+  print(colnames(df))
+  
+  # Selecionando colunas que já queremos e uma coluna depois da coluna Tarifa_tributos,
+  # que é a coluna de Parte fixa que queremos.
+  
   df <- df %>%
-    mutate(Regiao = recode(Regiao, !!!map_regioes))
+    select(one_of("Categoria_consumo", "Faixa_inicial", "Faixa_final", "Tarifa_tributos"),
+           which(names(df) == 'Tarifa_tributos') + 1)
   
-  # Retirando coluna de estado.
-  df <- subset(df, select = -Estado) %>% 
-    rename("Tarifa\n(em R$/m³)" = Tarifa)
+  # Agora que temos todas as colunas que queremos, transformamos o nome da coluna de 
+  # parte fixa.
+  novos_nomes_colunas <- c(colnames(df)[1:(length(colnames(df)) - 1)], "Parte_fixa")
+  names(df) <- novos_nomes_colunas
+  
+  print("colnames(df)")
+  print(colnames(df))
+  
+  colunas_converter <- c("Faixa_inicial", "Faixa_final")
+  df[colunas_converter] <- lapply(df[colunas_converter], function(col) sapply(col, function(x) as.integer(x[[1]])))
+  df[colunas_converter] <- lapply(df[colunas_converter], as.integer)
+  colunas_converter <- c("Tarifa_tributos", "Parte_fixa")
+  df[colunas_converter] <- lapply(df[colunas_converter], function(col) sapply(col, function(x) as.numeric(x[[1]])))
+  df[colunas_converter] <- lapply(df[colunas_converter], as.numeric)
+  
+  # Ajustando as faixas.
+  # Se tivermos as duas faixas como NA (caso em que faixa inicial é faixa única e
+  # faixa final está vazio), colocamos faixa única. Se tivermos a faixa final como
+  # NA ou um número maior que 1000000, colocamos o -, que indica o "fim" da faixa.
+  # As duas operações em sequência nessa ordem garantem que ficará do jeito necessário.
+  df <- df %>%
+    mutate(
+      Faixa_inicial = ifelse(is.na(Faixa_inicial) & is.na(Faixa_final), "Faixa única", Faixa_inicial),
+      Faixa_final = ifelse(is.na(Faixa_final) | Faixa_final > 10000000, "-", as.character(Faixa_final))
+    )
+  
+  # Renomando colunas para nomes mais legíveis.
+  novos_nomes_colunas <- c("Faixa inicial", "Faixa final", "Tarifa com tributos (R$/m³)", "Parte fixa")
+  names(df)[2:length(names(df))] <- novos_nomes_colunas
+  
   
   return(df)
 }
 
-
-# Servidor.
-mod_app_Server <- function(id) {
-  moduleServer(
-    id,
-    function(input, output, session) {
-      ns <- NS(id)
+#===============================================================================
+# Servidor
+calculadora_faixas_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    ns <- NS(id)
+    
+    # Valor reativo para armazenar o dataframe.
+    df_estrutura_tarifaria <- reactiveVal(NULL)
+    
+    observeEvent(input$atualizar_estrutura, {
+      req(input$nome_distribuidora_estrutura)
+      df <- obter_dados_estrutura(input$nome_distribuidora_estrutura)
+      df_estrutura_tarifaria(df)
+    })
+    
+    output$tabelas <- renderUI({
+      req(df_estrutura_tarifaria())
+      categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
       
-      # Criando valores que são atualizados pelas funções de busca de dados.
-      dados_tarifas <- eventReactive(input$update_tarifas, {
-        get_dados_tarifas(input$classe_consumo_tarifas, input$nivel_consumo_tarifas)
+      # Cria uma lista de tabelas para cada categoria.
+      lista_tabelas <- lapply(categorias, function(categoria) {
+        subset_dados <- df_estrutura_tarifaria() %>%
+          filter(Categoria_consumo == categoria) %>%
+          select(-Categoria_consumo)
+        
+        tagList(
+          div(class = "flex-item",
+              h3(categoria),
+              tableOutput(ns(paste0("tabela_", categoria)))
+          )
+        )
       })
       
-      # Criando gráfico das tarifas.
-      output$grafico_tarifas <- renderPlotly({
-        df <- dados_tarifas()
-        
-        df <- df %>% 
-          rename(Tarifa = "Tarifa\n(em R$/m³)")
-        
-        fig <- plot_ly(
-          df,
-          x = ~Distribuidora,
-          y = ~Tarifa,
-          color = ~Regiao,
-          type = "bar",
-          text = ~paste0(sprintf("%.2f", Tarifa)),
-          textposition = "outside") %>%
-          layout(
-            title = paste("Tarifa por distribuidora <br><sup>em R$/m³</sup>", sep = ""),
-            xaxis = list(
-              title = list(
-                text = "Distribuidora",
-                standoff = 25
-              ),
-              categoryorder = "total descending"
-            ),
-            yaxis = list(
-              title = "Tarifa média (em R$/m³)"
-            )
-          )
-        fig
-      })
+      # Colocando as tabelas dentro do container flex
+      div(class = "flex-container", do.call(tagList, lista_tabelas))
+    })
+    
+    
+    observe({
+      # Garantindo que a função funcionou e temos o df.
+      req(df_estrutura_tarifaria())
+      # Obtendo as categorias de consumo.
+      categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
       
-      # Criação das tabelas de tarifas das distribuidoras por região.
-      observeEvent(input$update_tarifas, {
-        output$tabela_ui_tarifas <- renderUI({
-          tagList(
-            column(1),
-            column(2,
-                   tags$div(
-                     h4("Norte"),
-                     tableOutput(ns('tabela_norte')),
-                     style = 
-                       "display: flex;
-                   flex-direction: column;
-                   align-items: center;"
-                   ),
-            ),
-            column(2,
-                   tags$div(
-                     h4("Nordeste"),
-                     tableOutput(ns('tabela_nordeste')),
-                     style = 
-                       "display: flex;
-                   flex-direction: column;
-                   align-items: center;"
-                   )
-            ),
-            column(2,
-                   tags$div(
-                     h4("Sudeste"),
-                     tableOutput(ns('tabela_sudeste')),
-                     style = 
-                       "display: flex;
-                   flex-direction: column;
-                   align-items: center;"
-                   )
-            ),
-            column(2,
-                   tags$div(
-                     h4("Sul"),
-                     tableOutput(ns('tabela_sul')),
-                     style = 
-                       "display: flex;
-                   flex-direction: column;
-                   align-items: center;"
-                   )
-            ),
-            column(2,
-                   tags$div(
-                     h4("Centro-oeste"),
-                     tableOutput(ns('tabela_centrooeste')),
-                     style = 
-                       "display: flex;
-                   flex-direction: column;
-                   align-items: center;"
-                   )
-            ),
-            column(1)
-          )
+      # Criando tabelas, uma pra cada categoria de consumo.
+      lapply(categorias, function(categoria) {
+        # Fazendo segmentação dos dados por categoria.
+        subset_dados <- df_estrutura_tarifaria() %>%
+          filter(Categoria_consumo == categoria) %>%
+          # Removendo coluna de categoria.
+          select(-Categoria_consumo) %>%
+          # Removendo linhas onde todos os dados são NA.
+          select(where(~ !all(is.na(.))))
+        
+        # Criando tabela para aquela categoria
+        output[[paste0("tabela_", categoria)]] <- renderTable({
+          subset_dados
         })
       })
+    })
+    
+    # Atualizando o menu dropdown com os nomes das abas (distribuidoras) da planilha.
+    observe({
+      # Garantindo que a planilha está disponível.
+      req(sheet_url)
       
-      # Filtrando dataframe para cada região.
-      dadosNorte <- reactive({
-        dados_tarifas() %>% 
-          filter(Regiao == "Norte") %>% 
-          subset(select = -Regiao)
-      })
-      dadosNordeste <- reactive({
-        dados_tarifas() %>% 
-          filter(Regiao == "Nordeste") %>% 
-          subset(select = -Regiao)
-      })
-      dadosSudeste <- reactive({
-        dados_tarifas() %>% 
-          filter(Regiao == "Sudeste") %>% 
-          subset(select = -Regiao)
-      })
-      dadosSul <- reactive({
-        dados_tarifas() %>% 
-          filter(Regiao == "Sul") %>% 
-          subset(select = -Regiao)
-      })
-      dadosCentroOeste <- reactive({
-        dados_tarifas() %>% 
-          filter(Regiao == "Centro-oeste") %>% 
-          subset(select = -Regiao)
-      })
+      nomes_abas <- sheet_names(sheet_url)
+      # Retirando os primeiros nomes, que não são abas de distribuidoras.
+      nomes_abas <- nomes_abas[4:length(nomes_abas)]
       
-      output$tabela_norte <- renderTable({
-        # Selecionando as distribuidoras daquela região e retirando coluna de
-        # região para criar as tabelas.
-        dadosNorte()
-      })
-      output$tabela_nordeste <- renderTable({
-        dadosNordeste()
-      })
-      output$tabela_sudeste <- renderTable({
-        dadosSudeste()
-      })
-      output$tabela_sul <- renderTable({
-        dadosSul()
-      })
-      output$tabela_centrooeste <- renderTable({
-        dadosCentroOeste()
-      })
-    }
-  )
+      # Mensagem de atualização.
+      message("Atualizando seletor com os nomes: ", nomes_abas)
+      
+      updateSelectInput(session, "nome_distribuidora_estrutura", choices = nomes_abas)
+    })
+  })
 }
