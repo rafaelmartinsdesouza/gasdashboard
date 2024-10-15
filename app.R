@@ -25,6 +25,11 @@ source("calculadora_tarifas/server.R")
 source("calculadora_faixas/ui.R")
 source("calculadora_faixas/server.R")
 
+# Importando aba de comparação de tarifas.
+# Comercial
+source("comparacao_tarifas_comercial/ui.R")
+source("comparacao_tarifas_comercial/server.R")
+
 
 #=============================================================================
 # Importando gráficos.
@@ -227,17 +232,27 @@ ui <- navbarPage(
            )
   ),
   
-  tabPanel("Calculadora",
+  #=============================================================================
+  # Abas da calculadora.
+  tabPanel("Calculadora de tarifas",
+           fluidPage(
+             calculadora_tarifas_ui("tarifas_module"),
+           )
+  ),
+  tabPanel("Estrutura tarifária",
+           fluidPage(
+             calculadora_faixas_ui("faixas_module")
+           )
+  ),
+  tabPanel("Comparação de tarifas",
            fluidPage(
              tabsetPanel(
-               tabPanel("Calculadora de tarifas", h3(class = "text-blue", "Calculadora de tarifas"),
-                        calculadora_tarifas_ui("tarifas_module"),
-               ),
-               tabPanel("Estrutura tarifária", h3(class = "text-blue", "Estrutura tarifária"),
-                        calculadora_faixas_ui("faixas_module")
-               ),
+               tabPanel("Comercial", h3(class = "text-blue", "Setor comercial"),
+               comp_comercial_ui("comp_comercial_module")
+               )
              )
-           )),
+           )
+  ),
 )
 
 #=============================================================================
@@ -371,6 +386,12 @@ server <- function(input, output, session) {
   #=============================================================================
   # Estrutura tarifária.
   calculadora_faixas_server("faixas_module")
+  
+  #=============================================================================
+  # Comparação de tarifas.
+  
+  # Aba de comercial
+  comp_comercial_server("comp_comercial_module")
 }
 
 

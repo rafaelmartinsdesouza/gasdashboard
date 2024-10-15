@@ -1,46 +1,45 @@
-library(shiny)
 library(plotly)
 library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
-segmento <- "comercial"
+SEGMENTO <- "comercial"
+
+# Por enquanto o valor específico de consumo fica salvo em uma variável.
 consumo_medio <- 800
-
-mod_app_UI <- function(id) {
-  ns <- NS(id)
-  tagList(
-    titlePanel(paste("Tarifas para o consumo médio", segmento, "de gás natural no mes atual")),
-    fluidRow(
-      column(12,
-             # Gráfico de tarifas das distribuidoras.
-             plotlyOutput(ns('grafico_tarifas'))
-      )
-    ),
-    fluidRow(
-      column(12,
-             # Tabelas com tarifas por distruibora por região.
-             uiOutput(ns('tabela_ui_tarifas'))
-      ),
-    )
-  )
-}
-
 
 #===============================================================================
 # Autenticação para acesso da planilha.
 
-gs4_auth(
-  path = "credentials/secret-key.json"
+# Transformando as credenciais salvas como variávies de ambiete em uma lista.
+credenciais <- list(
+  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
+  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
+  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
+  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
+  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
+  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
+  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
+  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
+  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
+  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
+  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
 )
 
-# URL da planilha.
-sheet_url = "https://docs.google.com/spreadsheets/d/1Lz4iTpRntvk_eJst-eWjX5TIOk2XkSZ1kGSj2puu6zo/edit?usp=sharing"
+# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
+# tender.
+credenciais_temp_path <- tempfile(fileext = ".json")
+write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
+
+# Autenticando com esse arquivo temporário.
+gs4_auth(path = credenciais_temp_path)
+
+# URL pra acesso da planilha.
+sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
 
 #===============================================================================
-# Servidor
-# Função que busca dados para tarifas das distribuidoras.
+# Função de obtenção dos dados.
 get_dados_tarifas <- function(valor_classe, valor_nivel){
   # Função que adquire os dados do Google Sheets.
   
@@ -90,8 +89,9 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
 }
 
 
+#===============================================================================
 # Servidor.
-mod_app_Server <- function(id) {
+comp_comercial_server <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -99,7 +99,7 @@ mod_app_Server <- function(id) {
       
       # Automatically fetch data based on the defined inputs
       dados_tarifas <- reactive({
-        get_dados_tarifas(segmento, consumo_medio)
+        get_dados_tarifas(SEGMENTO, consumo_medio)
       })
       
       # Render plot automatically
@@ -237,16 +237,3 @@ mod_app_Server <- function(id) {
     }
   )
 }
-
-
-
-#===============================================================================
-# Execução do aplicativo
-ui_tarifas_comercial <- fluidPage(
-  mod_app_UI('Calculadora_tarifas')
-)
-server_tarifas_comercial <- function(input, output, session) {
-  mod_app_Server('Calculadora_tarifas')
-}
-
-shinyApp(ui_tarifas_comercial, server_tarifas_comercial)
