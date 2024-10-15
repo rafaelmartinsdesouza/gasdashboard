@@ -3,13 +3,10 @@ library(googlesheets4)
 library(jsonlite)
 
 #=============================================================================
-# # Autenticação para acesso das planilhas.
-# path_to_json <- system.file(
-#    "credentials", "secret-key.json",
-#    package = "gargle"
-# )
+# Autenticação para acesso das planilhas.
 
-credentials <- list(
+# Transformando as credenciais salvas como variávies de ambiete em uma lista.
+credenciais <- list(
   type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
   project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
   private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
@@ -23,15 +20,14 @@ credentials <- list(
   universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
 )
 
-tmp_credentials_path <- tempfile(fileext = ".json")
-write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), tmp_credentials_path)
+# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
+# tender.
+credenciais_temp_path <- tempfile(fileext = ".json")
+write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
 
-# Authenticate with Google Sheets using the temporary JSON file
-gs4_auth(path = tmp_credentials_path)
+# Autenticcando com esse arquivo temporário.
+gs4_auth(path = credenciais_temp_path)
 
-# gs4_auth(
-#   path = "calculadora_tarifas/credentials/secret-key.json"
-# )
 
 # URL pra acesso da planilha.
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
