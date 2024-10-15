@@ -29,6 +29,12 @@ source("calculadora_faixas/server.R")
 # Comercial
 source("comparacao_tarifas_comercial/ui.R")
 source("comparacao_tarifas_comercial/server.R")
+# Industrial
+source("comparacao_tarifas_industrial/ui.R")
+source("comparacao_tarifas_industrial/server.R")
+# Residencial
+source("comparacao_tarifas_residencial/ui.R")
+source("comparacao_tarifas_residencial/server.R")
 
 
 #=============================================================================
@@ -247,12 +253,18 @@ ui <- navbarPage(
   tabPanel("Comparação de tarifas",
            fluidPage(
              tabsetPanel(
-               tabPanel("Comercial", h3(class = "text-blue", "Setor comercial"),
-               comp_comercial_ui("comp_comercial_module")
+               tabPanel("Residencial",
+                comp_residencial_ui("comp_residencial_module")
+               ),
+               tabPanel("Industrial",
+                comp_industrial_ui("comp_industrial_module")
+               ),
+               tabPanel("Comercial",
+                comp_comercial_ui("comp_comercial_module")
                )
              )
            )
-  ),
+  )
 )
 
 #=============================================================================
@@ -390,6 +402,10 @@ server <- function(input, output, session) {
   #=============================================================================
   # Comparação de tarifas.
   
+  # Aba de residencial
+  comp_residencial_server("comp_residencial_module")
+  # Aba de industrial
+  comp_industrial_server("comp_industrial_module")
   # Aba de comercial
   comp_comercial_server("comp_comercial_module")
 }

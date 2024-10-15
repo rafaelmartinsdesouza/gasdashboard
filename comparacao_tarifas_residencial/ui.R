@@ -4,12 +4,12 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
-SEGMENTO_COMERCIAL <- "comercial"
+SEGMENTO_RESIDENCIAL <- "residencial"
 
-comp_comercial_ui <- function(id) {
+comp_residencial_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    titlePanel(paste("Tarifas para o consumo médio", SEGMENTO_COMERCIAL, "de gás natural no mes atual")),
+    titlePanel(paste("Tarifas para o consumo médio", SEGMENTO_RESIDENCIAL, "de gás natural no mes atual")),
     fluidRow(
       column(12,
              # Gráfico de tarifas das distribuidoras.

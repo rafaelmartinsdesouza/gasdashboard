@@ -3,10 +3,10 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
-SEGMENTO_COMERCIAL <- "comercial"
+SEGMENTO_RESIDENCIAL <- "residencial"
 
 # Por enquanto o valor específico de consumo fica salvo em uma variável.
-consumo_medio_comercial <- 800
+consumo_medio_residencial <- 12
 
 #===============================================================================
 # Autenticação para acesso da planilha.
@@ -91,7 +91,7 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
 
 #===============================================================================
 # Servidor.
-comp_comercial_server <- function(id) {
+comp_residencial_server <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -99,7 +99,7 @@ comp_comercial_server <- function(id) {
       
       # Automatically fetch data based on the defined inputs
       dados_tarifas <- reactive({
-        get_dados_tarifas(SEGMENTO_COMERCIAL, consumo_medio_comercial)
+        get_dados_tarifas(SEGMENTO_RESIDENCIAL, consumo_medio_residencial)
       })
       
       # Render plot automatically
