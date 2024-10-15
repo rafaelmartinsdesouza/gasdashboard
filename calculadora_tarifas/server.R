@@ -1,10 +1,40 @@
-library(plotly)
-library(readxl)
-library(openxlsx)
+library(shiny)
+library(googlesheets4)
+library(jsonlite)
 
 #=============================================================================
-# Acesso da planilha com readxl.
-path = "../calculadora_data/Calculadora_V4.xlsx"
+# # Autenticação para acesso das planilhas.
+# path_to_json <- system.file(
+#    "credentials", "secret-key.json",
+#    package = "gargle"
+# )
+
+credentials <- list(
+  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
+  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
+  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
+  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
+  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
+  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
+  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
+  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
+  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
+  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
+  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
+)
+
+tmp_credentials_path <- tempfile(fileext = ".json")
+write(jsonlite::toJSON(credentials, auto_unbox = TRUE, pretty = TRUE), tmp_credentials_path)
+
+# Authenticate with Google Sheets using the temporary JSON file
+gs4_auth(path = tmp_credentials_path)
+
+# gs4_auth(
+#   path = "calculadora_tarifas/credentials/secret-key.json"
+# )
+
+# URL pra acesso da planilha.
+sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
 
 #=============================================================================
@@ -24,23 +54,21 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
   
   # Atualizando células de input.
   # Input da classe de consumo.
-  # Carregando arquivo.
-  wb <- loadWorkbook(path)
-  
-  # Colocando valores dos campos de input.
-  writeData(wb, sheet = 2, x = valor_classe, startCol = 4, startRow = 1)
-  writeData(wb, sheet = 2, x = valor_nivel, startCol = 6, startRow = 6)
-  
-  # Salvando alterações.
-  saveWorkbook(wb, path, overwrite = TRUE)
+  sheet_url %>% range_write(data = data.frame(valor_classe),
+                            sheet = 2,
+                            range = "D1",
+                            col_names = FALSE)
+  # Input da classe do nível de consumo mensal.
+  sheet_url %>% range_write(data = data.frame(valor_nivel),
+                            sheet = 2,
+                            range = "E6",
+                            col_names = FALSE)
   
   # Lendo retorno da calculadora.
-  df <- read_excel(path,
+  df <- read_sheet(sheet_url,
                    sheet = 2,
                    range = "B9:E27",
                    col_names = c("Distribuidora", "Tarifa", "Estado", "Regiao"))
-  print("df")
-  print(df)
   
   # Transformando nome das regiões de abreviação para o nome real.
   map_regioes <- c(
@@ -85,10 +113,10 @@ calculadora_tarifas_server <- function(id) {
         y = ~Tarifa,
         color = ~Regiao,
         type = "bar",
-        # text = ~ifelse(is.numeric(Tarifa), paste0(sprintf("%.2f", Tarifa)), "NA"),
+        text = ~paste0(sprintf("%.2f", Tarifa)),
         textposition = "outside") %>%
         layout(
-          title = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
+          title = paste("Tarifa por distribuidora <br><sup>em R$/m³</sup>", sep = ""),
           xaxis = list(
             title = list(
               text = "Distribuidora",
