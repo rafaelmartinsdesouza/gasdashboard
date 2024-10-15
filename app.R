@@ -17,9 +17,13 @@ library(openxlsx)
 
 #=============================================================================
 # Imports das abas da calculadora.
-# Importando calculadora de tarifas.
+# Importando aba da calculadora de tarifas.
 source("calculadora_tarifas/ui.R")
 source("calculadora_tarifas/server.R")
+
+# Importando aba de estrutura tarifária.
+source("calculadora_faixas/ui.R")
+source("calculadora_faixas/server.R")
 
 
 #=============================================================================
@@ -222,8 +226,18 @@ ui <- navbarPage(
              )
            )
   ),
-  # Calculadora de tarifas.
-  calculadora_tarifas_ui("tarifas_module")
+  
+  tabPanel("Calculadora",
+           fluidPage(
+             tabsetPanel(
+               tabPanel("Calculadora de tarifas", h3(class = "text-blue", "Calculadora de tarifas"),
+                        calculadora_tarifas_ui("tarifas_module"),
+               ),
+               tabPanel("Estrutura tarifária", h3(class = "text-blue", "Estrutura tarifária"),
+                        calculadora_faixas_ui("faixas_module")
+               ),
+             )
+           )),
 )
 
 #=============================================================================
@@ -353,6 +367,10 @@ server <- function(input, output, session) {
   #=============================================================================
   # Calculadora de tarifas.
   calculadora_tarifas_server("tarifas_module")
+  
+  #=============================================================================
+  # Estrutura tarifária.
+  calculadora_faixas_server("faixas_module")
 }
 
 
