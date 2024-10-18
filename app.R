@@ -1,16 +1,39 @@
+if (!require(shiny)) { install.packages("shiny") }
 library(shiny)
+
 #library(shinythemes)
+if (!require(plotly)) { install.packages("plotly") }
 library(plotly)
+
+if (!require(readxl)) { install.packages("readxl") }
 library(readxl)
+
+if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
+
 #library(shinydashboard)
+if (!require(mapview)) { install.packages("mapview") }
 library(mapview)
+
+if (!require(leaflet)) { install.packages("leaflet") }
 library(leaflet)
+
+if (!require(bslib)) { install.packages("bslib") }
 library(bslib)
+
+if (!require(RColorBrewer)) { install.packages("RColorBrewer") }
 library(RColorBrewer)
+
+if (!require(googlesheets4)) { install.packages("googlesheets4") }
 library(googlesheets4)
+
+if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
+
+if (!require(openssl)) { install.packages("openssl") }
 library(openssl)
+
+if (!require(rjson)) { install.packages("rjson") }
 library(rjson)
 
 
