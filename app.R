@@ -10,6 +10,8 @@ library(bslib)
 library(RColorBrewer)
 library(googlesheets4)
 library(tidyverse)
+library(openssl)
+library(rjson)
 
 
 #=============================================================================
@@ -39,8 +41,41 @@ source("comparacao_tarifas_residencial/server.R")
 source("graficos.R")
 
 
+#===============================================================================
+# Autenticando com credenciais criptografadas
+
+# Recuperando chave e iv codificados em hexadecimal
+chave_codificada <- Sys.getenv("CHAVE")
+iv_codificado <- Sys.getenv("IV")
+
+# Descodificando de hexadecimal para formato original
+chave <- base64_decode(chave_codificada)
+# chave <- as.raw(chave)
+iv <- base64_decode(iv_codificado)
+
+# Lendo arquivo criptografado
+path_arquivo_criptografado <- "credentials/encrypted-key.bin"
+conteudo_criptografado <- readBin(path_arquivo_criptografado,
+                                  what = "raw",
+                                  n = file.info(path_arquivo_criptografado)$size)
+
+# Descriptografando credenciais
+conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado,
+                                             key = chave,
+                                             iv = iv)
+# Transformando em texto
+conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
+
+# Colocando no arquivo temporário para sre usado na autenticação
+credenciais_temp <- tempfile(fileext = ".json")
+writeLines(conteudo_descriptografado_txt, credenciais_temp)
+
+# Finalmente fazendo a autenticação
+gs4_auth(path = credenciais_temp)
+
+
 #=============================================================================
-# Defina a interface do usuário (UI)
+# Definindo a interface do usuário (UI)
 ui <- navbarPage(
   #theme = shinytheme("cerulean"),  # Escolha um tema base
   includeCSS("custom.css"),    # Inclua o CSS customizado

@@ -2,35 +2,15 @@ library(shiny)
 library(googlesheets4)
 library(jsonlite)
 
-#=============================================================================
-# Autenticação para acesso das planilhas.
+message("Rodando aba de estrutura tarifária")
 
-# Transformando as credenciais salvas como variávies de ambiete em uma lista.
-credenciais <- list(
-  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
-  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
-  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
-  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
-  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
-  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
-  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
-  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
-  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
-  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
-  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
-)
-
-# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
-# tender.
-credenciais_temp_path <- tempfile(fileext = ".json")
-write(jsonlite::toJSON(credenciais, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
-
-# Autenticando com esse arquivo temporário.
-gs4_auth(path = credenciais_temp_path)
+# URL da planilha
+sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
 #=============================================================================
 # Função de obtenção dos dados.
 obter_dados_estrutura <- function(nome_distribuidora) {
+  message("Rodando função de recebimento de dados.")
   # Lendo aba da distribuidora recebida.
   df <- range_read(sheet_url, sheet = nome_distribuidora)
   
@@ -63,8 +43,6 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   colnames(df)[colnames(df) == "Faixa Inicial"] <- 'Faixa_inicial'
   colnames(df)[colnames(df) == "Faixa Final"] <- 'Faixa_final'
   
-  print(colnames(df))
-  
   # Selecionando colunas que já queremos e uma coluna depois da coluna Tarifa_tributos,
   # que é a coluna de Parte fixa que queremos.
   
@@ -76,9 +54,6 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   # parte fixa.
   novos_nomes_colunas <- c(colnames(df)[1:(length(colnames(df)) - 1)], "Parte_fixa")
   names(df) <- novos_nomes_colunas
-  
-  print("colnames(df)")
-  print(colnames(df))
   
   colunas_converter <- c("Faixa_inicial", "Faixa_final")
   df[colunas_converter] <- lapply(df[colunas_converter], function(col) sapply(col, function(x) as.integer(x[[1]])))

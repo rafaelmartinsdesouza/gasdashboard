@@ -1,36 +1,10 @@
 library(shiny)
 library(googlesheets4)
-library(jsonlite)
 
-#=============================================================================
-# Autenticação para acesso das planilhas.
+message("Rodando aba de tarifas")
 
-# Transformando as credenciais salvas como variávies de ambiete em uma lista.
-credenciais <- list(
-  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
-  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
-  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
-  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
-  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
-  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
-  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
-  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
-  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
-  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
-  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
-)
-
-# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
-# tender.
-credenciais_temp_path <- tempfile(fileext = ".json")
-write(jsonlite::toJSON(credenciais, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
-
-# Autenticando com esse arquivo temporário.
-gs4_auth(path = credenciais_temp_path)
-
-# URL pra acesso da planilha.
+# URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
-
 
 #=============================================================================
 # Função para busca de dados.
@@ -74,10 +48,11 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
     "CO" = "Centro-oeste"
   )
   df <- df %>%
-    mutate(Regiao = recode(Regiao, !!!map_regioes))
-  
-  # Retirando coluna de estado.
-  df <- subset(df, select = -Estado) %>% 
+    # Utilizando dicionário para mudar os nomes das regiões na coluna.
+    mutate(Regiao = recode(Regiao, !!!map_regioes)) %>% 
+    # Retirando coluna de estado.
+    subset(select = -Estado) %>% 
+    # Renomeando coluna de tarifa.
     rename("Tarifa\n(em R$/m³)" = Tarifa)
   
   return(df)
@@ -98,6 +73,7 @@ calculadora_tarifas_server <- function(id) {
     # Criando gráfico das tarifas.
     output$grafico_tarifas <- renderPlotly({
       df <- dados_tarifas()
+      
       
       df <- df %>% 
         rename(Tarifa = "Tarifa\n(em R$/m³)")

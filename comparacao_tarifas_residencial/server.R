@@ -3,44 +3,19 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
+message("Rodando aba de comparação tarifária para o segmento residencial")
+
 SEGMENTO_RESIDENCIAL <- "residencial"
 
 # Por enquanto o valor específico de consumo fica salvo em uma variável.
 consumo_medio_residencial <- 12
 
-#===============================================================================
-# Autenticação para acesso da planilha.
-
-# Transformando as credenciais salvas como variávies de ambiete em uma lista.
-credenciais <- list(
-  type = Sys.getenv("GOOGLE_SHEETS_TYPE"),
-  project_id = Sys.getenv("GOOGLE_SHEETS_PROJECT_ID"),
-  private_key_id = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY_ID"),
-  private_key = Sys.getenv("GOOGLE_SHEETS_PRIVATE_KEY"),
-  client_email = Sys.getenv("GOOGLE_SHEETS_CLIENT_EMAIL"),
-  client_id = Sys.getenv("GOOGLE_SHEETS_CLIENT_ID"),
-  auth_uri = Sys.getenv("GOOGLE_SHEETS_AUTH_URI"),
-  token_uri = Sys.getenv("GOOGLE_SHEETS_TOKEN_URI"),
-  auth_provider_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_AUTH_PROVIDER_X509_CERT_URL"),
-  client_x509_cert_url = Sys.getenv("GOOGLE_SHEETS_CLIENT_X509_CERT_URL"),
-  universe_domain = Sys.getenv("GOOGLE_SHEETS_UNIVERSE_DOMAIN")
-)
-
-# Transformando essa lista em arquivo JSON temporário que o gs4_auth consegue en
-# tender.
-credenciais_temp_path <- tempfile(fileext = ".json")
-write(jsonlite::toJSON(credenciais, auto_unbox = TRUE, pretty = TRUE), credenciais_temp_path)
-
-# Autenticando com esse arquivo temporário.
-gs4_auth(path = credenciais_temp_path)
-
-# URL pra acesso da planilha.
+# URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
-
 
 #===============================================================================
 # Função de obtenção dos dados.
-get_dados_tarifas <- function(valor_classe, valor_nivel){
+get_dados_tarifas_residencial <- function(valor_classe, valor_nivel){
   # Função que adquire os dados do Google Sheets.
   
   # Alterando string para respectivo valor de classe de consumo.
@@ -99,7 +74,7 @@ comp_residencial_server <- function(id) {
       
       # Automatically fetch data based on the defined inputs
       dados_tarifas <- reactive({
-        get_dados_tarifas(SEGMENTO_RESIDENCIAL, consumo_medio_residencial)
+        get_dados_tarifas_residencial(SEGMENTO_RESIDENCIAL, consumo_medio_residencial)
       })
       
       # Render plot automatically
