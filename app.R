@@ -2,6 +2,7 @@ if (!require(shiny)) { install.packages("shiny") }
 library(shiny)
 
 #library(shinythemes)
+
 if (!require(plotly)) { install.packages("plotly") }
 library(plotly)
 
@@ -12,6 +13,7 @@ if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
 
 #library(shinydashboard)
+
 if (!require(mapview)) { install.packages("mapview") }
 library(mapview)
 
@@ -32,9 +34,6 @@ library(tidyverse)
 
 if (!require(openssl)) { install.packages("openssl") }
 library(openssl)
-
-if (!require(rjson)) { install.packages("rjson") }
-library(rjson)
 
 
 #=============================================================================
