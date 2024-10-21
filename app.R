@@ -39,23 +39,23 @@ library(openssl)
 #=============================================================================
 # Imports das abas da calculadora.
 # Importando aba da calculadora de tarifas.
-source("calculadora_tarifas/ui.R")
-source("calculadora_tarifas/server.R")
+source("calculadora/calculadora_tarifas/ui.R")
+source("calculadora/calculadora_tarifas/server.R")
 
 # Importando aba de estrutura tarifária.
-source("calculadora_faixas/ui.R")
-source("calculadora_faixas/server.R")
+source("calculadora/estrutura_tarifaria/ui.R")
+source("calculadora/estrutura_tarifaria/server.R")
 
 # Importando aba de comparação de tarifas.
 # Comercial
-source("comparacao_tarifas_comercial/ui.R")
-source("comparacao_tarifas_comercial/server.R")
+source("calculadora/comparacao_tarifas_comercial/ui.R")
+source("calculadora/comparacao_tarifas_comercial/server.R")
 # Industrial
-source("comparacao_tarifas_industrial/ui.R")
-source("comparacao_tarifas_industrial/server.R")
+source("calculadora/comparacao_tarifas_industrial/ui.R")
+source("calculadora/comparacao_tarifas_industrial/server.R")
 # Residencial
-source("comparacao_tarifas_residencial/ui.R")
-source("comparacao_tarifas_residencial/server.R")
+source("calculadora/comparacao_tarifas_residencial/ui.R")
+source("calculadora/comparacao_tarifas_residencial/server.R")
 
 
 #=============================================================================
@@ -301,7 +301,7 @@ ui <- navbarPage(
   ),
   tabPanel("Estrutura tarifária",
            fluidPage(
-             calculadora_faixas_ui("faixas_module")
+             estrutura_tarifaria_ui("estrutura_module")
            )
   ),
   tabPanel("Comparação de tarifas",
@@ -451,7 +451,7 @@ server <- function(input, output, session) {
   
   #=============================================================================
   # Estrutura tarifária.
-  calculadora_faixas_server("faixas_module")
+  estrutura_tarifaria_server("estrutura_module")
   
   #=============================================================================
   # Comparação de tarifas.

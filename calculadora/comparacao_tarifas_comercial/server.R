@@ -3,70 +3,23 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
-message("Rodando aba de comparação tarifária para o segmento residencial")
+# Importanto função que busca dados na google sheet.
+source("calculadora/utils.R")
 
-SEGMENTO_RESIDENCIAL <- "residencial"
+message("Rodando aba de comparação tarifária para o segmento comercial")
+
+SEGMENTO_COMERCIAL <- "comercial"
 
 # Por enquanto o valor específico de consumo fica salvo em uma variável.
-consumo_medio_residencial <- 12
+consumo_medio_comercial <- 800
 
 # URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
-#===============================================================================
-# Função de obtenção dos dados.
-get_dados_tarifas_residencial <- function(valor_classe, valor_nivel){
-  # Função que adquire os dados do Google Sheets.
-  
-  # Alterando string para respectivo valor de classe de consumo.
-  # Vetor que funciona como dicionário.
-  map_classes <- c(
-    "residencial" = 1,
-    "industrial" = 2,
-    "comercial" = 3
-  )
-  # Convertendo classe recebida na função.
-  valor_classe <- map_classes[valor_classe]
-  
-  # Atualizando células de input.
-  # Input da classe de consumo.
-  sheet_url %>% range_write(data = data.frame(valor_classe),
-                            sheet = 2,
-                            range = "D1",
-                            col_names = FALSE)
-  # Input da classe do nível de consumo mensal.
-  sheet_url %>% range_write(data = data.frame(valor_nivel),
-                            sheet = 2,
-                            range = "E6",
-                            col_names = FALSE)
-  
-  # Lendo retorno da calculadora.
-  df <- read_sheet(sheet_url,
-                   sheet = 2,
-                   range = "B9:E27",
-                   col_names = c("Distribuidora", "Tarifa", "Estado", "Regiao"))
-  
-  # Transformando nome das regiões de abreviação para o nome real.
-  map_regioes <- c(
-    "SE" = "Sudeste",
-    "N" = "Norte",
-    "NE" = "Nordeste",
-    "S" = "Sul",
-    "CO" = "Centro-oeste"
-  )
-  df <- df %>%
-    mutate(Regiao = recode(Regiao, !!!map_regioes))
-  
-  # Retirando coluna de estado.
-  df <- subset(df, select = -Estado)
-  
-  return(df)
-}
-
 
 #===============================================================================
 # Servidor.
-comp_residencial_server <- function(id) {
+comp_comercial_server <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -74,7 +27,7 @@ comp_residencial_server <- function(id) {
       
       # Automatically fetch data based on the defined inputs
       dados_tarifas <- reactive({
-        get_dados_tarifas_residencial(SEGMENTO_RESIDENCIAL, consumo_medio_residencial)
+        get_dados_tarifas_comercial(SEGMENTO_COMERCIAL, consumo_medio_comercial)
       })
       
       # Render plot automatically
@@ -134,7 +87,7 @@ comp_residencial_server <- function(id) {
                    tags$div(
                      h4("Sudeste"),
                      tableOutput(ns('tabela_sudeste')),
-                     h5("(Todas as tarifas estão em m³)"),
+                     h5("(Todas as tarifas estão em R$/m³)"),
                      style = 
                        "display: flex;
                    flex-direction: column;

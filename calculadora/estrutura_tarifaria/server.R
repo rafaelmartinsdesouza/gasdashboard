@@ -83,7 +83,7 @@ obter_dados_estrutura <- function(nome_distribuidora) {
 
 #===============================================================================
 # Servidor
-calculadora_faixas_server <- function(id) {
+estrutura_tarifaria_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- NS(id)
     

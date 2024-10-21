@@ -2,7 +2,7 @@ library(shiny)
         
 #===============================================================================
 # UI
-calculadora_faixas_ui <- function(id) {
+estrutura_tarifaria_ui <- function(id) {
   ns <- NS(id)
   tagList(
     titlePanel(
