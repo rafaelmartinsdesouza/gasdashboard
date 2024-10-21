@@ -80,3 +80,30 @@ body, .container-fluid {
   background-color: #004080; /* Cor de fundo da barra de menus (Azul Marinho Claro) */
   border-color: #003366;     /* Cor da borda da barra de menus */
 }
+
+/* Estilo para aba de estrutura tarifária */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.flex-item {
+    flex: 1 1 300px;
+
+    min-width: 300px;
+    max-width: 350px;
+
+    border: 1px solid #ddd;
+    
+    padding: 10px;
+    margin-bottom: 20px;
+    
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
