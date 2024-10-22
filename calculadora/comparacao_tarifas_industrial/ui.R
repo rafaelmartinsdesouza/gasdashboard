@@ -11,5 +11,8 @@ SEGMENTO_INDUSTRIAL <- "industrial"
 #===============================================================================
 # UI.
 comp_industrial_ui <- function(id){
+  message("===================================================================")
+  message("UI da aba de tarifas para valor fixo do segmento industrial \n")
+  
   comparacao_ui(id, SEGMENTO_INDUSTRIAL)
 }

@@ -10,7 +10,7 @@ sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jD
 #=============================================================================
 # Função de obtenção dos dados.
 obter_dados_estrutura <- function(nome_distribuidora) {
-  message("Rodando função de recebimento de dados.")
+  message("Buscando dados")
   # Lendo aba da distribuidora recebida.
   df <- range_read(sheet_url, sheet = nome_distribuidora)
   
@@ -87,6 +87,9 @@ estrutura_tarifaria_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- NS(id)
     
+    message("===================================================================")
+    message("Servidor da aba de estrutura tarifária \n")
+    
     # Valor reativo para armazenar o dataframe.
     df_estrutura_tarifaria <- reactiveVal(NULL)
     
@@ -97,6 +100,7 @@ estrutura_tarifaria_server <- function(id) {
     })
     
     output$tabelas <- renderUI({
+      message("Renderizando tabelas")
       req(df_estrutura_tarifaria())
       categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
       
@@ -120,6 +124,7 @@ estrutura_tarifaria_server <- function(id) {
     
     
     observe({
+      message("Criando tabelas")
       # Garantindo que a função funcionou e temos o df.
       req(df_estrutura_tarifaria())
       # Obtendo as categorias de consumo.
@@ -144,15 +149,13 @@ estrutura_tarifaria_server <- function(id) {
     
     # Atualizando o menu dropdown com os nomes das abas (distribuidoras) da planilha.
     observe({
+      message("Atualizando seletor com os nomes das abas")
       # Garantindo que a planilha está disponível.
       req(sheet_url)
       
       nomes_abas <- sheet_names(sheet_url)
       # Retirando os primeiros nomes, que não são abas de distribuidoras.
       nomes_abas <- nomes_abas[4:length(nomes_abas)]
-      
-      # Mensagem de atualização.
-      message("Atualizando seletor com os nomes: ", nomes_abas)
       
       updateSelectInput(session, "nome_distribuidora_estrutura", choices = nomes_abas)
     })

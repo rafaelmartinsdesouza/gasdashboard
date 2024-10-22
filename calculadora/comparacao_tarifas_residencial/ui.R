@@ -11,5 +11,8 @@ SEGMENTO_RESIDENCIAL <- "residencial"
 #===============================================================================
 # UI.
 comp_residencial_ui <- function(id){
+  message("===================================================================")
+  message("UI da aba de tarifas para valor fixo do segmento residencial \n")
+  
   comparacao_ui(id, SEGMENTO_RESIDENCIAL)
 }
