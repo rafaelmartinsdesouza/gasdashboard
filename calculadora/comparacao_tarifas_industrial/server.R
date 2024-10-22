@@ -4,7 +4,7 @@ library(tidyverse)
 library(googledrive)
 
 # Importando função de busca de dados na planilha google.
-source("calculadora/utils.R")
+source("calculadora/funcoes_comparacao.R")
 
 message("Rodando aba de comparação tarifária para o segmento industrial")
 

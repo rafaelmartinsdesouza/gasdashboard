@@ -4,7 +4,7 @@ library(tidyverse)
 library(googledrive)
 
 # Importanto função que busca dados na google sheet.
-source("calculadora/utils.R")
+source("calculadora/funcoes_comparacao.R")
 
 message("Rodando aba de comparação tarifária para o segmento comercial")
 
