@@ -4,6 +4,8 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
+source("calculadora/funcoes_comparacao.R")
+
 SEGMENTO_RESIDENCIAL <- "residencial"
 
 #===============================================================================
