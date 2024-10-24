@@ -107,3 +107,55 @@ table {
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Estilos para abas de tarifas por distribuidora */
+/* Div com tabela e título*/
+.table-div {
+  width: 15%;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  text-align: center;
+}
+
+/* Estilização das tabelas em si */
+.table-styling {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-styling th, .table-styling td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-styling th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* Título do gráfico */
+.graph-title {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Div com todas as tabelas*/
+.tables-div{
+  width: 100%;
+  
+  box-sizing: border-box;
+  
+  padding: 0 2.5%;
+  
+  display: flex;
+  justify-content: space-around;
+}

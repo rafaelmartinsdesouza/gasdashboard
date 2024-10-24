@@ -18,7 +18,7 @@ CONSUMO_FIXO_COMERCIAL <- 800
 # Servidor.
 comp_comercial_server <- function(id) {
   message("===================================================================")
-  message("Server da aba de tarifas para valor fixo do segmento comercial \n")
+  message("Servidor da aba de tarifas para valor fixo do segmento comercial \n")
   
   comparacao_server(id, SEGMENTO_COMERCIAL, CONSUMO_FIXO_COMERCIAL)
 }

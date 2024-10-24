@@ -1,12 +1,6 @@
 # URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
-# ==============================================================================
-# Estilização das tabelas da visão de tarifas.
-table_styling <- "display: flex;
-                  flex-direction: column;
-                  align-items: center;"
-
 # Função que adquire os dados do Google Sheets.
 get_dados_tarifas <- function(valor_classe, valor_nivel){
   message("Buscando dados das abas de tarifas")
@@ -46,6 +40,7 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
     "S" = "Sul",
     "CO" = "Centro-oeste"
   )
+  
   df <- df %>%
     # Utilizando dicionário para mudar os nomes das regiões na coluna.
     mutate(Regiao = recode(Regiao, !!!map_regioes)) %>% 
@@ -68,15 +63,35 @@ filtra_dados_regiao <- function(dados_tarifas, regiao) {
   })
 }
 
-# Cria tabela com dados para cada região
+# Cria tabela com dados para cada região e estilização
 cria_tabela_div <- function(nome_regiao, id_tabela, ns) {
-  column(2,
-         tags$div(
-           h4(nome_regiao),
-           tableOutput(ns(id_tabela)),
-           style = table_styling
-         )
+  tags$div(
+    h4(nome_regiao),
+    tableOutput(ns(id_tabela)),
+    class = "table-div"
   )
+}
+
+# Configura para que as tabelas sejam criadas com a estilização e com os dados corretamente.
+configura_output_tabela <- function(regiao, ns, dados_tarifas, output) {
+  # Renderiza UI da tabela
+  output[[paste0("tabela_", tolower(regiao))]] <- renderUI({
+    tableOutput(ns(paste0("tabela_", tolower(regiao))))
+  })
+  
+  # Renderiza tabelas com dados filtrados por região
+  output[[paste0("tabela_", tolower(regiao))]] <- renderTable({
+    filtra_dados_regiao(dados_tarifas, regiao)()
+  }, bordered = TRUE, striped = TRUE, hover = TRUE)
+}
+
+# Configura o output de todas as tabelas de uma vez.
+configura_output_tabelas <- function(ns, dados_tarifas, output) {
+  cria_output_tabela("Norte", ns, dados_tarifas, output)
+  cria_output_tabela("Nordeste", ns, dados_tarifas, output)
+  cria_output_tabela("Sudeste", ns, dados_tarifas, output)
+  cria_output_tabela("Sul", ns, dados_tarifas, output)
+  cria_output_tabela("Centrooeste", ns, dados_tarifas, output)
 }
 
 # Cria o gráfico da aba de tarifas.
@@ -84,27 +99,46 @@ cria_grafico_tarifas <- function (df) {
   df <- df %>% 
     rename(Tarifa = "Tarifa\n(em R$/m³)")
   
-  fig <- plot_ly(
-    df,
-    x = ~Distribuidora,
-    y = ~Tarifa,
-    color = ~Regiao,
-    type = "bar",
-    text = ~paste0(sprintf("%.2f", Tarifa)),
-    textposition = "outside") %>%
+  fig <- plot_ly() %>% 
+    add_bars(data = df, x = ~Distribuidora, y = ~Tarifa, color = ~Regiao, colors = c("#2685BF", "#3D9DD9", "#5FB6D9", "#94D7F2", "#BBE8F2"),
+  # fig <- plot_ly(
+  #   df,
+  #   x = ~Distribuidora,
+  #   y = ~Tarifa,
+  #   color = ~Regiao,
+  #   type = "bar",
+  #   text = ~paste0(sprintf("%.2f", Tarifa)),
+  #   textposition = "outside",
+    marker = list(
+      line = list(color = "white", width = 1)  # Adds a border to simulate rounded bars
+    )) %>% 
     layout(
-      title = paste("Tarifa por distribuidora <br><sup>em R$/m³</sup>", sep = ""),
+      title = list(
+        text = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
+        font = list(family = "Arial", size = 16, color = "#333")
+      ),
       xaxis = list(
-        title = list(
-          text = "Distribuidora",
-          standoff = 25
-        ),
-        categoryorder = "total descending"
+        title = list(text = "Distribuidora", standoff = 25),
+        categoryorder = "total descending",
+        tickfont = list(family = "Arial", size = 12),
+        tickangle = -45  # Angle the labels for better readability
       ),
       yaxis = list(
-        title = "Tarifa média (em R$/m³)"
+        title = "Tarifa média (em R$/m³)",
+        tickfont = list(family = "Arial", size = 12),
+        range = c(0, max(df$Tarifa) * 1.1)  # Slightly increase the y-axis range
+      ),
+      margin = list(t = 50, b = 150),  # Adjust margins for better spacing
+      showlegend = TRUE,  # Keep the legend to clarify regions
+      legend = list(
+        orientation = "h",  # Horizontal legend at the bottom
+        xanchor = "center",
+        x = 0.5,
+        y = -0.2
       )
+      # barmode = "overlay"  # Maintain the clear borders for rounding effect
     )
+
   return(fig)
 }
 
@@ -130,31 +164,33 @@ comparacao_server <- function(id, segmento, consumo_medio) {
         fig
       })
       
-      
       # Criação das tabelas de tarifas das distribuidoras por região
       observe({
         output$tabela_ui_tarifas <- renderUI({
           message("Criando tabelas")
           tagList(
-            column(1),
-            cria_tabela_div("Norte", "tabela_norte", ns),
-            cria_tabela_div("Nordeste", "tabela_nordeste", ns),
-            cria_tabela_div("Sudeste", "tabela_sudeste", ns),
-            cria_tabela_div("Sul", "tabela_sul", ns),
-            cria_tabela_div("Centro-oeste", "tabela_centrooeste", ns),
-            column(1)
+            tags$div(
+              cria_tabela_div("Norte", "tabela_norte", ns),
+              cria_tabela_div("Nordeste", "tabela_nordeste", ns),
+              tags$div(
+                h4("Sudeste"),
+                tableOutput(ns("tabela_sudeste")),
+                h5("(Todas as tarifas estão em R$/m³)"),
+                class = "table-div"
+              ),
+              cria_tabela_div("Sul", "tabela_sul", ns),
+              cria_tabela_div("Centro-oeste", "tabela_centrooeste", ns),
+              class = "tables-div"
+            )
           )
         })
       })
       
-      output$tabela_norte <- renderTable({ filtra_dados_regiao(dados_tarifas, "Norte")() })
-      output$tabela_nordeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Nordeste")() })
-      output$tabela_sudeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Sudeste")() })
-      output$tabela_sul <- renderTable({ filtra_dados_regiao(dados_tarifas, "Sul")() })
-      output$tabela_centrooeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Centro-oeste")() })
+      cria_tabelas(ns, dados_tarifas, output)
     }
   )
 }
+
 
 # ==============================================================================
 # Código reutilizável para UI's das abas de comparação de tarifas.
@@ -164,15 +200,13 @@ comparacao_ui <- function(id, segmento) {
     titlePanel(paste("Tarifas para o consumo médio", segmento, "de gás natural no mes atual")),
     fluidRow(
       column(12,
-             # Gráfico de tarifas das distribuidoras.
              plotlyOutput(ns('grafico_tarifas'))
       )
     ),
     fluidRow(
       column(12,
-             # Tabelas com tarifas por distruibora por região.
              uiOutput(ns('tabela_ui_tarifas'))
-      ),
+      )
     )
   )
 }

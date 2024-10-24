@@ -36,25 +36,18 @@ calculadora_tarifas_server <- function(id) {
       output$tabela_ui_tarifas <- renderUI({
         message("Criando tabelas")
         tagList(
-          column(1),
-          
-          cria_tabela_div("Norte", "tabela_norte", ns),
-          cria_tabela_div("Nordeste", "tabela_nordeste", ns),
-          cria_tabela_div("Sudeste", "tabela_sudeste", ns),
-          cria_tabela_div("Sul", "tabela_sul", ns),
-          cria_tabela_div("Centro-oeste", "tabela_centrooeste", ns),
-          
-          column(1)
+          tags$div(
+            cria_tabela_div("Norte", "tabela_norte", ns),
+            cria_tabela_div("Nordeste", "tabela_nordeste", ns),
+            cria_tabela_div("Sudeste", "tabela_sudeste", ns),
+            cria_tabela_div("Sul", "tabela_sul", ns),
+            cria_tabela_div("Centro-oeste", "tabela_centrooeste", ns),
+            class = "tables-div"
+          )
         )
       })
     })
     
-    
-    # Renderizando tabelas
-    output$tabela_norte <- renderTable({ filtra_dados_regiao(dados_tarifas, "Norte")() })
-    output$tabela_nordeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Nordeste")() })
-    output$tabela_sudeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Sudeste")() })
-    output$tabela_sul <- renderTable({ filtra_dados_regiao(dados_tarifas, "Sul")() })
-    output$tabela_centrooeste <- renderTable({ filtra_dados_regiao(dados_tarifas, "Centro-oeste")() })   
+    cria_tabelas(ns, dados_tarifas, output) 
   })
 }
