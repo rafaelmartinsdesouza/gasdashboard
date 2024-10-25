@@ -208,6 +208,33 @@ ui <- navbarPage(
              )
            )),
   
+  # Abas da calculadora.
+  tabPanel("Calculadora de tarifas",
+           fluidPage(
+             calculadora_tarifas_ui("tarifas_module"),
+           )
+  ),
+  tabPanel("Estrutura tarifária",
+           fluidPage(
+             estrutura_tarifaria_ui("estrutura_module")
+           )
+  ),
+  tabPanel("Comparação de tarifas",
+           fluidPage(
+             tabsetPanel(
+               tabPanel("Residencial",
+                        comp_residencial_ui("comp_residencial_module")
+               ),
+               tabPanel("Industrial",
+                        comp_industrial_ui("comp_industrial_module")
+               ),
+               tabPanel("Comercial",
+                        comp_comercial_ui("comp_comercial_module")
+               )
+             )
+           )
+  ),
+  
   # Página 5
   tabPanel("Sobre",
            fluidPage(
@@ -288,34 +315,6 @@ ui <- navbarPage(
              p(class = "text-blue", 
                "Mais informações podem ser encontradas em ", 
                tags$a(href = "https://ceri.fgv.br/sobre", "https://ceri.fgv.br/sobre", target = "_blank")
-             )
-           )
-  ),
-  
-  #=============================================================================
-  # Abas da calculadora.
-  tabPanel("Calculadora de tarifas",
-           fluidPage(
-             calculadora_tarifas_ui("tarifas_module"),
-           )
-  ),
-  tabPanel("Estrutura tarifária",
-           fluidPage(
-             estrutura_tarifaria_ui("estrutura_module")
-           )
-  ),
-  tabPanel("Comparação de tarifas",
-           fluidPage(
-             tabsetPanel(
-               tabPanel("Residencial",
-                comp_residencial_ui("comp_residencial_module")
-               ),
-               tabPanel("Industrial",
-                comp_industrial_ui("comp_industrial_module")
-               ),
-               tabPanel("Comercial",
-                comp_comercial_ui("comp_comercial_module")
-               )
              )
            )
   )
