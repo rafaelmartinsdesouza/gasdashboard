@@ -1,3 +1,5 @@
+# Servidor da aba de estrutura tarifária.
+
 library(shiny)
 library(googlesheets4)
 library(jsonlite)

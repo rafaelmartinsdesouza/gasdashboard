@@ -11,9 +11,12 @@ estrutura_tarifaria_ui <- function(id) {
     
     sidebarLayout(
       sidebarPanel(
-        width = 2,  # Smaller sidebar width
+        width = 2,
         selectInput(ns("nome_distribuidora_estrutura"), "Distribuidora:", choices = NULL),
-        actionButton(ns("atualizar_estrutura"), "Atualizar")
+        div(
+          actionButton(ns("atualizar_estrutura"), "Criar tabelas"),
+          style = "display: flex; justify-content: center"
+        )
       ),
       mainPanel(
         width = 9,  # Painel principal maior.

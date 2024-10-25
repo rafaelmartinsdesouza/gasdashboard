@@ -18,11 +18,14 @@ calculadora_tarifas_ui <- function(id) {
                    wellPanel(
                      selectInput(ns("classe_consumo_tarifas"),
                                  "Classe de Consumo:",
-                                 choices = c("residencial", "industrial", "comercial")),
+                                 choices = c("Residencial", "Industrial", "Comercial")),
                      numericInput(ns("nivel_consumo_tarifas"),
                                   "Nível de consumo (m³):",
                                   value = 500),
-                     actionButton(ns("update_tarifas"), "Atualizar")
+                     div(
+                       actionButton(ns("update_tarifas"), "Criar visualizações"),
+                       style = "display: flex; justify-content: center;"
+                     )
                    ),     
                    style = 
                      "display: flex;
@@ -41,7 +44,7 @@ calculadora_tarifas_ui <- function(id) {
         ),
         fluidRow(
           column(12,
-                 h4("*: Tarifas com impostos.")
+                 h4("* Tarifas com impostos.")
           )
         )
       )

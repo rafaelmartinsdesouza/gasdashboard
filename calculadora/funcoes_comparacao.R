@@ -4,6 +4,10 @@ sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jD
 # Função que adquire os dados do Google Sheets.
 get_dados_tarifas <- function(valor_classe, valor_nivel){
   message("Buscando dados das abas de tarifas")
+  
+  # String da classe de consumo com minúsculas.
+  valor_classe <- tolower(valor_classe)
+  
   # Alterando string para respectivo valor de classe de consumo.
   # Vetor que funciona como dicionário.
   map_classes <- c(
@@ -11,6 +15,7 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
     "industrial" = 2,
     "comercial" = 3
   )
+  
   # Convertendo classe recebida na função.
   valor_classe <- map_classes[valor_classe]
   
@@ -38,7 +43,7 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
     "N" = "Norte",
     "NE" = "Nordeste",
     "S" = "Sul",
-    "CO" = "Centro-oeste"
+    "CO" = "Centrooeste"
   )
   
   df <- df %>%
@@ -100,18 +105,18 @@ cria_grafico_tarifas <- function (df) {
     rename(Tarifa = "Tarifa\n(em R$/m³)")
   
   fig <- plot_ly() %>% 
-    add_bars(data = df, x = ~Distribuidora, y = ~Tarifa, color = ~Regiao, colors = c("#2685BF", "#3D9DD9", "#5FB6D9", "#94D7F2", "#BBE8F2"),
-  # fig <- plot_ly(
-  #   df,
-  #   x = ~Distribuidora,
-  #   y = ~Tarifa,
-  #   color = ~Regiao,
-  #   type = "bar",
-  #   text = ~paste0(sprintf("%.2f", Tarifa)),
-  #   textposition = "outside",
-    marker = list(
-      line = list(color = "white", width = 1)  # Adds a border to simulate rounded bars
-    )) %>% 
+    add_bars(
+      data = df, 
+      x = ~Distribuidora, 
+      y = ~Tarifa, 
+      color = ~Regiao, 
+      colors = c("#7C2934", "#7C7929", "#294552", "#246F91", "#008FD1"),
+      marker = list(
+        line = list(color = "white", width = 1)  # Adds a border to simulate rounded bars
+      ),
+      text = ~round(Tarifa, 2),  # Display values with two decimal places
+      textposition = 'outside'  # Position text above the bars
+    ) %>% 
     layout(
       title = list(
         text = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
@@ -131,12 +136,12 @@ cria_grafico_tarifas <- function (df) {
       margin = list(t = 50, b = 150),  # Adjust margins for better spacing
       showlegend = TRUE,  # Keep the legend to clarify regions
       legend = list(
-        orientation = "h",  # Horizontal legend at the bottom
-        xanchor = "center",
-        x = 0.5,
-        y = -0.2
+        title = list(text = "Região"),
+        orientation = "v",  # Keep the legend vertical
+        xanchor = "right",
+        x = 1.1,  # Move the legend to the upper-right corner
+        y = 1
       )
-      # barmode = "overlay"  # Maintain the clear borders for rounding effect
     )
 
   return(fig)
