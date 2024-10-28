@@ -4,7 +4,7 @@ library(shiny)
 library(googlesheets4)
 
 # Importando função de busca de dados na planilha google.
-source("calculadora/funcoes_comparacao.R")
+source("calculadora/modulo_tarifas.R")
 
 
 #=============================================================================

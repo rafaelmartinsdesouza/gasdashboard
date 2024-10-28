@@ -4,14 +4,11 @@ library(tidyverse)
 library(googledrive)
 
 # Importanto função que busca dados na google sheet.
-source("calculadora/funcoes_comparacao.R")
+source("calculadora/modulo_tarifas.R")
 
 message("Rodando aba de comparação tarifária para o segmento comercial")
 
 SEGMENTO_COMERCIAL <- "comercial"
-
-# Por enquanto o valor específico de consumo fica salvo em uma variável.
-CONSUMO_FIXO_COMERCIAL <- 800
 
 
 #===============================================================================
@@ -20,5 +17,5 @@ comp_comercial_server <- function(id) {
   message("===================================================================")
   message("Servidor da aba de tarifas para valor fixo do segmento comercial \n")
   
-  comparacao_server(id, SEGMENTO_COMERCIAL, CONSUMO_FIXO_COMERCIAL)
+  comparacao_server(id, SEGMENTO_COMERCIAL, CONSUMO_PADRAO_COMERCIAL)
 }

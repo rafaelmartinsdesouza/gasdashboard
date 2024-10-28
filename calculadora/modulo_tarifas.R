@@ -1,6 +1,13 @@
 # URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
+
+# Valores padrão de consumo para cada segmento.
+CONSUMO_PADRAO_COMERCIAL <- 800
+CONSUMO_PADRAO_INDUSTRIAL <- 600000
+CONSUMO_PADRAO_RESIDENCIAL <- 12
+
+# ==============================================================================
 # Função que adquire os dados do Google Sheets.
 get_dados_tarifas <- function(valor_classe, valor_nivel){
   message("Buscando dados das abas de tarifas")
@@ -78,7 +85,7 @@ cria_tabela_div <- function(nome_regiao, id_tabela, ns) {
 }
 
 # Configura para que as tabelas sejam criadas com a estilização e com os dados corretamente.
-configura_output_tabela <- function(regiao, ns, dados_tarifas, output) {
+cria_output_tabela <- function(regiao, ns, dados_tarifas, output) {
   # Renderiza UI da tabela
   output[[paste0("tabela_", tolower(regiao))]] <- renderUI({
     tableOutput(ns(paste0("tabela_", tolower(regiao))))
@@ -91,7 +98,7 @@ configura_output_tabela <- function(regiao, ns, dados_tarifas, output) {
 }
 
 # Configura o output de todas as tabelas de uma vez.
-configura_output_tabelas <- function(ns, dados_tarifas, output) {
+cria_output_tabelas <- function(ns, dados_tarifas, output) {
   cria_output_tabela("Norte", ns, dados_tarifas, output)
   cria_output_tabela("Nordeste", ns, dados_tarifas, output)
   cria_output_tabela("Sudeste", ns, dados_tarifas, output)
@@ -149,22 +156,24 @@ cria_grafico_tarifas <- function (df) {
 
 # ==============================================================================
 # Código reutilizável para servidor das abas de comparação de tarifas.
-comparacao_server <- function(id, segmento, consumo_medio) {
+comparacao_server <- function(id, segmento, consumo_padrao) {
   moduleServer(
     id,
     function(input, output, session) {
       ns <- NS(id)
       
-      # Criando valores que são atualizados pelas funções de busca de dados.
+      # Buscando valores de tarifas na planilha de acordo com a aba em questão
       dados_tarifas <- reactive({
         message("Buscando dados")
-        get_dados_tarifas(input$classe_consumo_tarifas, input$nivel_consumo_tarifas)
+        get_dados_tarifas(segmento, consumo_padrao)
       })
       
       # Criando gráfico das tarifas.
       output$grafico_tarifas <- renderPlotly({
         message("Renderizando gráfico")
-        df <- dados_tarifas()
+        
+        df <- req(dados_tarifas())
+        
         fig <- cria_grafico_tarifas(df)
         fig
       })
@@ -191,7 +200,7 @@ comparacao_server <- function(id, segmento, consumo_medio) {
         })
       })
       
-      cria_tabelas(ns, dados_tarifas, output)
+      cria_output_tabelas(ns, dados_tarifas, output)
     }
   )
 }
@@ -199,10 +208,12 @@ comparacao_server <- function(id, segmento, consumo_medio) {
 
 # ==============================================================================
 # Código reutilizável para UI's das abas de comparação de tarifas.
-comparacao_ui <- function(id, segmento) {
+comparacao_ui <- function(id, segmento, consumo_padrao_segmento) {
   ns <- NS(id)
   tagList(
-    titlePanel(paste("Tarifas para o consumo médio", segmento, "de gás natural no mes atual")),
+    titlePanel(paste("Tarifas para o consumo padrão de gás natural do setor", segmento, " no mês atual")),
+    h4(paste("Valor padrão para o setor ", segmento, ": ", as.integer(consumo_padrao_segmento), "m³", sep="")),
+    
     fluidRow(
       column(12,
              plotlyOutput(ns('grafico_tarifas'))

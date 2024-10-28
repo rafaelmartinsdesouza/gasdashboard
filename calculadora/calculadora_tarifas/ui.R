@@ -1,7 +1,9 @@
 library(shiny)
 
+source("calculadora/modulo_tarifas.R")
+
 calculadora_tarifas_ui <- function(id) {
-  ns <- NS(id)  # Create a namespace for the module
+  ns <- NS(id)
   
   tabPanel(
     "Calculadora de tarifas",

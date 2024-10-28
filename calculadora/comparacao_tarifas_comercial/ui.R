@@ -4,7 +4,7 @@ library(googlesheets4)
 library(tidyverse)
 library(googledrive)
 
-source("calculadora/funcoes_comparacao.R")
+source("calculadora/modulo_tarifas.R")
 
 SEGMENTO_COMERCIAL <- "comercial"
 
@@ -14,5 +14,5 @@ comp_comercial_ui <- function(id){
   message("===================================================================")
   message("UI da aba de tarifas para valor fixo do segmento comercial \n")
   
-  comparacao_ui(id, SEGMENTO_COMERCIAL)
+  comparacao_ui(id, SEGMENTO_COMERCIAL, CONSUMO_PADRAO_COMERCIAL)
 }
