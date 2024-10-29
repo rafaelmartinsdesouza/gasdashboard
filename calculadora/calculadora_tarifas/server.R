@@ -3,7 +3,7 @@
 library(shiny)
 library(googlesheets4)
 
-# Importando função de busca de dados na planilha google.
+# Importando módulo com funções auxiliares da calculadora.
 source("calculadora/modulo_tarifas.R")
 
 
@@ -29,8 +29,19 @@ calculadora_tarifas_server <- function(id) {
       fig <- cria_grafico_tarifas(df)
       fig
     })
-   
-     
+
+    renderiza_botao_download(input, output, ns, dados_tarifas)
+    
+    # Criando o handler para o download dos dados.
+    output$download_dados <- downloadHandler(
+      filename = function() {
+        paste("dados_tarifas_gas_consumo-", input$nivel_consumo_tarifas, "m3_segmento-", input$classe_consumo_tarifas, "_", Sys.Date(), ".csv", sep = "")
+      },
+      content = function(file) {
+        write.csv(dados_tarifas(), file, row.names = FALSE)
+      }
+    )
+       
     # Criação das tabelas de tarifas das distribuidoras por região
     observeEvent(input$update_tarifas, {
       output$tabela_ui_tarifas <- renderUI({

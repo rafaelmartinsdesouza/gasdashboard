@@ -36,6 +36,8 @@ calculadora_tarifas_ui <- function(id) {
                  )
           ),
           column(10,
+                 # UI dinâmica para o botão de download dos dados.
+                 uiOutput(ns("download_button_ui")),
                  withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
           )
         ),

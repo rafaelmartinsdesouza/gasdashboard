@@ -6,8 +6,9 @@ sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jD
 
 # Valores padrão de consumo para cada segmento.
 CONSUMO_PADRAO_COMERCIAL <- 800
-CONSUMO_PADRAO_INDUSTRIAL <- 600000
+CONSUMO_PADRAO_INDUSTRIAL <- as.integer(600000)
 CONSUMO_PADRAO_RESIDENCIAL <- 12
+
 
 # ==============================================================================
 # Função que adquire os dados do Google Sheets.
@@ -68,6 +69,8 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
 
 # ==============================================================================
 # Funções auxiliares do servidor.
+
+# ===================================================
 # Filtra dados pra cada região.
 filtra_dados_regiao <- function(dados_tarifas, regiao) {
   reactive({
@@ -77,6 +80,7 @@ filtra_dados_regiao <- function(dados_tarifas, regiao) {
   })
 }
 
+# ====================================================
 # Cria tabela com dados para cada região e estilização
 cria_tabela_div <- function(nome_regiao, id_tabela, ns) {
   tags$div(
@@ -86,6 +90,7 @@ cria_tabela_div <- function(nome_regiao, id_tabela, ns) {
   )
 }
 
+# ====================================================
 # Configura para que as tabelas sejam criadas com a estilização e com os dados corretamente.
 cria_output_tabela <- function(regiao, ns, dados_tarifas, output) {
   # Renderiza UI da tabela
@@ -99,6 +104,7 @@ cria_output_tabela <- function(regiao, ns, dados_tarifas, output) {
   }, bordered = TRUE, striped = TRUE, hover = TRUE)
 }
 
+# ====================================================
 # Configura o output de todas as tabelas de uma vez.
 cria_output_tabelas <- function(ns, dados_tarifas, output) {
   cria_output_tabela("Norte", ns, dados_tarifas, output)
@@ -108,6 +114,7 @@ cria_output_tabelas <- function(ns, dados_tarifas, output) {
   cria_output_tabela("Centrooeste", ns, dados_tarifas, output)
 }
 
+# ====================================================
 # Cria o gráfico da aba de tarifas.
 cria_grafico_tarifas <- function (df) {
   df <- df %>% 
@@ -156,6 +163,18 @@ cria_grafico_tarifas <- function (df) {
   return(fig)
 }
 
+# ====================================================
+# Renderizando UI do botão quando os dados estiverem disponíveis.
+renderiza_botao_download <- function(input, output, ns, dados){
+  output$download_button_ui <- renderUI({
+    # Garantindo que os dados estão disponíveis antes de renderizar o botão.
+    print(typeof(dados))
+    req(dados())
+    downloadButton(ns("download_dados"), "Baixar Dados (CSV)")
+  })
+}
+
+
 # ==============================================================================
 # Código reutilizável para servidor das abas de comparação de tarifas.
 comparacao_server <- function(id, segmento, consumo_padrao) {
@@ -179,6 +198,18 @@ comparacao_server <- function(id, segmento, consumo_padrao) {
         fig <- cria_grafico_tarifas(df)
         fig
       })
+      
+      # Criação do handler para o download dos dados.
+      output$download_dados <- downloadHandler(
+        # nivel_consumo <- req(input$nivel_consumo_tarifas)
+        
+        filename = function() {
+          paste("dados_tarifas_gas_consumo-", consumo_padrao, "m3_segmento-", segmento, "_", Sys.Date(), ".csv", sep = "")
+        },
+        content = function(file) {
+          write.csv(dados_tarifas(), file, row.names = FALSE)
+        }
+      )
       
       # Criação das tabelas de tarifas das distribuidoras por região
       observe({
@@ -214,10 +245,11 @@ comparacao_ui <- function(id, segmento, consumo_padrao_segmento) {
   ns <- NS(id)
   tagList(
     titlePanel(paste("Tarifas para o consumo padrão de gás natural do setor", segmento, " no mês atual")),
-    h4(paste("Valor padrão para o setor ", segmento, ": ", as.integer(consumo_padrao_segmento), "m³", sep="")),
+    h4(paste("Valor padrão para o setor ", segmento, ": ", consumo_padrao_segmento, "m³", sep="")),
     
     fluidRow(
       column(12,
+             downloadButton(ns("download_dados"), "Baixar Dados (CSV)"),
              plotlyOutput(ns('grafico_tarifas'))
       )
     ),

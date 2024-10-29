@@ -4,12 +4,13 @@ library(shiny)
 library(googlesheets4)
 library(jsonlite)
 
-message("Rodando aba de estrutura tarifária")
+# Importando módulo com funções auxiliares da calculadora.
+source("calculadora/modulo_tarifas.R")
 
 # URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
-#=============================================================================
+#===============================================================================
 # Função de obtenção dos dados.
 obter_dados_estrutura <- function(nome_distribuidora) {
   message("Buscando dados")
@@ -89,22 +90,51 @@ estrutura_tarifaria_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- NS(id)
     
+    # ====================================================
+    # Mensagem inicial
     message("===================================================================")
     message("Servidor da aba de estrutura tarifária \n")
     
+    # ====================================================
     # Valor reativo para armazenar o dataframe.
     df_estrutura_tarifaria <- reactiveVal(NULL)
     
+    # ====================================================
+    # Barra de carregamento.
+    
+    # Botçao pressionado.
     observeEvent(input$atualizar_estrutura, {
+      # Garante que temos o nome da distribuidora.
       req(input$nome_distribuidora_estrutura)
       
+      # Mostra barra de progresso para melhorar UX.
       withProgress(message = "Carregando dados", value = 0, {
         df <- obter_dados_estrutura(input$nome_distribuidora_estrutura)
         df_estrutura_tarifaria(df)
+        
+        # Incrementa toda a barra.
         incProgress(1)
       })
     })
     
+    # ====================================================
+    # Donwload dos dados
+    renderiza_botao_download(input, output, ns, df_estrutura_tarifaria)
+    
+    # Criando o handler para o download dos dados.
+    output$download_dados <- downloadHandler(
+      filename = function() {
+        paste("dados-estrutura-tarifaria-gas_distribuidora-", input$nome_distribuidora_estrutura, Sys.Date(), ".csv", sep = "")
+      },
+      content = function(file) {
+        write.csv(df_estrutura_tarifaria(), file, row.names = FALSE)
+      }
+    )
+    
+    
+    # ====================================================
+    # Tabelas
+    # Renderizando tabelas.
     output$tabelas <- renderUI({
       message("Renderizando tabelas")
       
@@ -130,15 +160,15 @@ estrutura_tarifaria_server <- function(id) {
       div(class = "flex-container", do.call(tagList, lista_tabelas))
     })
     
-    
+    # Configurando os outputs das tabelas.
     observe({
       message("Criando tabelas")
       # Garantindo que a função funcionou e temos o df.
       req(df_estrutura_tarifaria())
-      
+
       # Obtendo as categorias de consumo.
       categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
-      
+
       # Criando tabelas, uma pra cada categoria de consumo.
       lapply(categorias, function(categoria) {
         # Fazendo segmentação dos dados por categoria.
@@ -148,13 +178,16 @@ estrutura_tarifaria_server <- function(id) {
           select(-Categoria_consumo) %>%
           # Removendo linhas onde todos os dados são NA.
           select(where(~ !all(is.na(.))))
-        
+
         # Criando tabela para aquela categoria
         output[[paste0("tabela_", categoria)]] <- renderTable({
           subset_dados
         })
       })
     })
+    
+    # ====================================================
+    # Input
     
     # Atualizando o menu dropdown com os nomes das abas (distribuidoras) da planilha.
     observe({

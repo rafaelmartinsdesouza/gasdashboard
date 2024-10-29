@@ -26,6 +26,8 @@ estrutura_tarifaria_ui <- function(id) {
       ),
       mainPanel(
         width = 9,  # Painel principal maior.
+        # UI dinâmica para o botão de download dos dados.
+        uiOutput(ns("download_button_ui")),
         uiOutput(ns("tabelas"))
       )
     )
