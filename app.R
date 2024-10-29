@@ -222,7 +222,7 @@ ui <- navbarPage(
              estrutura_tarifaria_ui("estrutura_module")
            )
   ),
-  tabPanel("Comparação de tarifas",
+  tabPanel("Tarifas para consumo médio",
            fluidPage(
              tabsetPanel(
                tabPanel("Residencial",

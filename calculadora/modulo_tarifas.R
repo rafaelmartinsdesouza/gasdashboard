@@ -244,7 +244,7 @@ comparacao_server <- function(id, segmento, consumo_padrao) {
 comparacao_ui <- function(id, segmento, consumo_padrao_segmento) {
   ns <- NS(id)
   tagList(
-    titlePanel(paste("Tarifas para o consumo padrão de gás natural do setor", segmento, " no mês atual")),
+    titlePanel(paste("Tarifas para o consumo médio do setor", segmento, " no mês atual")),
     h4(paste("Valor padrão para o setor ", segmento, ": ", consumo_padrao_segmento, "m³", sep="")),
     
     fluidRow(
