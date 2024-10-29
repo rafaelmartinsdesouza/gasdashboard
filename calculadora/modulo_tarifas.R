@@ -9,6 +9,8 @@ CONSUMO_PADRAO_COMERCIAL <- 800
 CONSUMO_PADRAO_INDUSTRIAL <- as.integer(600000)
 CONSUMO_PADRAO_RESIDENCIAL <- 12
 
+# Paleta de cores dos gráficos.
+paleta_grafico <- c("#AFAEB4", "#0C63AA", "#73BFE8", "#002D4D", "#5C5B5F")
 
 # ==============================================================================
 # Função que adquire os dados do Google Sheets.
@@ -126,7 +128,7 @@ cria_grafico_tarifas <- function (df) {
       x = ~Distribuidora, 
       y = ~Tarifa, 
       color = ~Regiao, 
-      colors = c("#7C2934", "#7C7929", "#294552", "#246F91", "#008FD1"),
+      colors = paleta_grafico,
       marker = list(
         line = list(color = "white", width = 1)  # Adds a border to simulate rounded bars
       ),
@@ -168,7 +170,6 @@ cria_grafico_tarifas <- function (df) {
 renderiza_botao_download <- function(input, output, ns, dados){
   output$download_button_ui <- renderUI({
     # Garantindo que os dados estão disponíveis antes de renderizar o botão.
-    print(typeof(dados))
     req(dados())
     downloadButton(ns("download_dados"), "Baixar Dados (CSV)")
   })
