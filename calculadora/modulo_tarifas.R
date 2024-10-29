@@ -1,3 +1,5 @@
+library(shinycssloaders)
+
 # URL da planilha
 sheet_url = "https://docs.google.com/spreadsheets/d/1f0IC0tKz4_0O0PTsqqv4_lLc-jDEiFT5Rpx-uALiReM/edit?usp=sharing"
 
@@ -221,7 +223,7 @@ comparacao_ui <- function(id, segmento, consumo_padrao_segmento) {
     ),
     fluidRow(
       column(12,
-             uiOutput(ns('tabela_ui_tarifas'))
+             withSpinner(uiOutput(ns('tabela_ui_tarifas')), type = 8)
       )
     )
   )

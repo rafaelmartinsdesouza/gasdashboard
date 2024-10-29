@@ -1,10 +1,16 @@
+# UI da aba de estrutura tarifária.
+
 library(shiny)
+library(shinyjs)
         
 #===============================================================================
 # UI
 estrutura_tarifaria_ui <- function(id) {
   ns <- NS(id)
   tagList(
+    # Inicializando shinyjs
+    useShinyjs(),
+    
     titlePanel(
       h1("Estrutura tarifária da distribuição", align = "center")
     ),
@@ -20,7 +26,7 @@ estrutura_tarifaria_ui <- function(id) {
       ),
       mainPanel(
         width = 9,  # Painel principal maior.
-        uiOutput(ns("tabelas")) 
+        uiOutput(ns("tabelas"))
       )
     )
   )

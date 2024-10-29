@@ -97,13 +97,19 @@ estrutura_tarifaria_server <- function(id) {
     
     observeEvent(input$atualizar_estrutura, {
       req(input$nome_distribuidora_estrutura)
-      df <- obter_dados_estrutura(input$nome_distribuidora_estrutura)
-      df_estrutura_tarifaria(df)
+      
+      withProgress(message = "Carregando dados", value = 0, {
+        df <- obter_dados_estrutura(input$nome_distribuidora_estrutura)
+        df_estrutura_tarifaria(df)
+        incProgress(1)
+      })
     })
     
     output$tabelas <- renderUI({
       message("Renderizando tabelas")
+      
       req(df_estrutura_tarifaria())
+      
       categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
       
       # Cria uma lista de tabelas para cada categoria.
@@ -129,6 +135,7 @@ estrutura_tarifaria_server <- function(id) {
       message("Criando tabelas")
       # Garantindo que a função funcionou e temos o df.
       req(df_estrutura_tarifaria())
+      
       # Obtendo as categorias de consumo.
       categorias <- unique(df_estrutura_tarifaria()$Categoria_consumo)
       

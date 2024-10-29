@@ -35,6 +35,9 @@ library(tidyverse)
 if (!require(openssl)) { install.packages("openssl") }
 library(openssl)
 
+if (!require(shinycssloaders)) { install.packages("shinycssloaders") }
+library(shinycssloaders)
+
 
 #=============================================================================
 # Imports das abas da calculadora.

@@ -36,7 +36,7 @@ calculadora_tarifas_ui <- function(id) {
                  )
           ),
           column(10,
-                 plotlyOutput(ns('grafico_tarifas'))
+                 withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
           )
         ),
         fluidRow(
