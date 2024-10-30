@@ -8,6 +8,7 @@ calculadora_tarifas_ui <- function(id) {
   tabPanel(
     "Calculadora de tarifas",
     fluidPage(
+      add_busy_spinner(),
       tagList(
         titlePanel(
           h1("Calculadora de tarifas* do mercado de gás natural no Brasil",
@@ -37,8 +38,9 @@ calculadora_tarifas_ui <- function(id) {
           ),
           column(10,
                  # UI dinâmica para o botão de download dos dados.
-                 uiOutput(ns("download_button_ui")),
-                 withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
+                 # uiOutput(ns("download_button_ui")),
+                 # withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
+                 plotlyOutput(ns('grafico_tarifas'))
           )
         ),
         fluidRow(

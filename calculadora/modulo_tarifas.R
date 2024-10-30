@@ -244,19 +244,27 @@ comparacao_server <- function(id, segmento, consumo_padrao) {
 # Código reutilizável para UI's das abas de comparação de tarifas.
 comparacao_ui <- function(id, segmento, consumo_padrao_segmento) {
   ns <- NS(id)
-  tagList(
-    titlePanel(paste("Tarifas para o consumo médio do setor", segmento, " no mês atual")),
-    h4(paste("Valor padrão para o setor ", segmento, ": ", consumo_padrao_segmento, "m³", sep="")),
-    
-    fluidRow(
-      column(12,
-             downloadButton(ns("download_dados"), "Baixar Dados (CSV)"),
-             plotlyOutput(ns('grafico_tarifas'))
-      )
-    ),
-    fluidRow(
-      column(12,
-             withSpinner(uiOutput(ns('tabela_ui_tarifas')), type = 8)
+  
+  tabPanel(
+    "",
+    fluidPage(
+      add_busy_spinner(),
+      tagList(
+        titlePanel(paste("Tarifas para o consumo médio do setor", segmento, " no mês atual")),
+        h4(paste("Valor padrão para o setor ", segmento, ": ", consumo_padrao_segmento, "m³", sep="")),
+        
+        fluidRow(
+          column(12,
+                 downloadButton(ns("download_dados"), "Baixar Dados (CSV)"),
+                 plotlyOutput(ns('grafico_tarifas'))
+          )
+        ),
+        fluidRow(
+          column(12,
+                 # withSpinner(uiOutput(ns('tabela_ui_tarifas')), type = 8)
+                 uiOutput(ns('tabela_ui_tarifas'))
+          )
+        )
       )
     )
   )

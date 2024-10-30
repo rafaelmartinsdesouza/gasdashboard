@@ -102,16 +102,16 @@ estrutura_tarifaria_server <- function(id) {
     # ====================================================
     # Barra de carregamento.
     
-    # Botçao pressionado.
+    # Botão pressionado.
     observeEvent(input$atualizar_estrutura, {
       # Garante que temos o nome da distribuidora.
       req(input$nome_distribuidora_estrutura)
-      
+
       # Mostra barra de progresso para melhorar UX.
       withProgress(message = "Carregando dados", value = 0, {
         df <- obter_dados_estrutura(input$nome_distribuidora_estrutura)
         df_estrutura_tarifaria(df)
-        
+
         # Incrementa toda a barra.
         incProgress(1)
       })

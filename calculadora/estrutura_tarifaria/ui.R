@@ -7,14 +7,13 @@ library(shinyjs)
 # UI
 estrutura_tarifaria_ui <- function(id) {
   ns <- NS(id)
+  
   tagList(
-    # Inicializando shinyjs
     useShinyjs(),
     
     titlePanel(
       h1("Estrutura tarifária da distribuição", align = "center")
     ),
-    
     sidebarLayout(
       sidebarPanel(
         width = 2,
@@ -32,4 +31,18 @@ estrutura_tarifaria_ui <- function(id) {
       )
     )
   )
+  
+  # tabPanel(
+  #   "Estrutura tarifária",
+  #   fluidPage(
+  #     add_busy_spinner(),
+      
+      # tagList(
+      #   # Inicializando shinyjs
+      #   # useShinyjs(),
+      #   
+      #   
+      #   )
+    #   )
+    # )
 }
