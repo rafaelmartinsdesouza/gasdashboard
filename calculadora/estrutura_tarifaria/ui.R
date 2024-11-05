@@ -1,7 +1,6 @@
 # UI da aba de estrutura tarifária.
 
 library(shiny)
-library(shinyjs)
         
 #===============================================================================
 # UI

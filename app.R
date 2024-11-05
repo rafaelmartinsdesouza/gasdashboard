@@ -41,6 +41,9 @@ library(openssl)
 if (!require(shinybusy)) { install.packages("shinybusy") }
 library(shinybusy)
 
+if (!require(shinyjs)) { install.packages("shinyjs") }
+library(shinyjs)
+
 
 #=============================================================================
 # Imports das abas da calculadora.
