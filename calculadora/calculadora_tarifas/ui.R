@@ -1,4 +1,4 @@
-library(shiny)
+# UI da aba de tarifas
 
 source("calculadora/modulo_tarifas.R")
 

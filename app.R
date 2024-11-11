@@ -35,14 +35,14 @@ library(tidyverse)
 if (!require(openssl)) { install.packages("openssl") }
 library(openssl)
 
-# if (!require(shinycssloaders)) { install.packages("shinycssloaders") }
-# library(shinycssloaders)
-
 if (!require(shinybusy)) { install.packages("shinybusy") }
 library(shinybusy)
 
 if (!require(shinyjs)) { install.packages("shinyjs") }
 library(shinyjs)
+
+if (!require(jsonlite)) { install.packages("jsonlite") }
+library(jsonlite)
 
 
 #=============================================================================

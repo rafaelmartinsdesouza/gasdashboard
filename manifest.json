@@ -5001,10 +5001,10 @@
       "checksum": "ae2fe52331eaafbd4c98cca530e0eee1"
     },
     ".Rprofile": {
-      "checksum": "705054f061438036de96b0c1011bed29"
+      "checksum": "16590c730e7d961e655bcdf17f97736c"
     },
     "app.R": {
-      "checksum": "52f5e4d636b54cc39455fd4ee7aea50f"
+      "checksum": "e3d31dacee26db87e2c122994b25e01a"
     },
     "appt.R": {
       "checksum": "fd8f4337145ee764ca39aeb96575cf87"
@@ -5034,10 +5034,10 @@
       "checksum": "3720857784b73b9c1910445f9ec450af"
     },
     "calculadora/calculadora_tarifas/server.R": {
-      "checksum": "dc1e2975177079fcacac057f1550070b"
+      "checksum": "a9bd7900df55e89fc455d8a7010cb360"
     },
     "calculadora/calculadora_tarifas/ui.R": {
-      "checksum": "0ec56c4fb822e0bf5b089b1b19c3e23d"
+      "checksum": "f5b792cab49cfac172e8ce002ad450e7"
     },
     "calculadora/comparacao_tarifas_comercial/server.R": {
       "checksum": "6308f4e4a919c27ec7b07e628804e885"
@@ -5058,10 +5058,10 @@
       "checksum": "6562fd8d71ff9ed2ac60f7fececec1ff"
     },
     "calculadora/estrutura_tarifaria/server.R": {
-      "checksum": "9ed1f97a338a44f80b0404661bfe782e"
+      "checksum": "787f5fe1b27b6845b76518b0e6a0baa0"
     },
     "calculadora/estrutura_tarifaria/ui.R": {
-      "checksum": "4271561ae58f635ccf74da19b52b5eb4"
+      "checksum": "7d97b226e92ab84f459861951caa27eb"
     },
     "calculadora/modulo_tarifas.R": {
       "checksum": "1cadf08059d46c6d39ff20994f76d12f"
@@ -5076,7 +5076,7 @@
       "checksum": "79d520f7110583747010fc926fe9b47b"
     },
     "custom.css": {
-      "checksum": "2eb0b44d959b605704a63d5ce31b68bd"
+      "checksum": "9cb2b1eb0cfcaab1eade45d414cc15dc"
     },
     "data/expansions.csv": {
       "checksum": "2c12cdc786ec26f4516dc29050cd285b"

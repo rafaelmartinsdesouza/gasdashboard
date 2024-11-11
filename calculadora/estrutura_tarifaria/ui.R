@@ -1,7 +1,5 @@
 # UI da aba de estrutura tarifária.
 
-library(shiny)
-        
 #===============================================================================
 # UI
 estrutura_tarifaria_ui <- function(id) {

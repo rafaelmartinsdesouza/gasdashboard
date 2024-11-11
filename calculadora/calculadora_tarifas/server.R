@@ -1,8 +1,5 @@
 # Server da aba de calculadora de tarifas.
 
-library(shiny)
-library(googlesheets4)
-
 # Importando módulo com funções auxiliares da calculadora.
 source("calculadora/modulo_tarifas.R")
 

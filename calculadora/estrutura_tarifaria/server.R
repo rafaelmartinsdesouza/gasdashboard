@@ -1,9 +1,5 @@
 # Servidor da aba de estrutura tarifária.
 
-library(shiny)
-library(googlesheets4)
-library(jsonlite)
-
 # Importando módulo com funções auxiliares da calculadora.
 source("calculadora/modulo_tarifas.R")
 
