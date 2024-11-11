@@ -153,42 +153,37 @@ table {
     text-align: center;
 }
 
+
 /* Estilização das tabelas em si */
 .table-div th,
 .table-div td {
     border: 1px solid #ddd;
     padding: 8px;
     
-    vertical-align: !important middle;
+    vertical-align: middle !important;
+    text-align: center !important;
 }
 
 .table-div td {
-    width: min-content;
+    width: max-content;
 }
 
-tr th{
-    text-align: !important  center;
-    padding-right: !important 0;
-    padding-left: !important 0;
-    vertical-align: !important middle;
-  
-}
-
-.table-div th {
+.table-div th{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
     padding-top: 12px;
     padding-bottom: 12px;
     
-    text-align: center;
     color: #333;
     
     background-color: #f2f2f2;
-    
 }
 
 /* Fix the width of the second column (tariff) to 15% */
 td:nth-child(2), th:nth-child(2) {
-    width: 55%;
+    width: 45%;
 }
+
 /* First column (distributor) will take the rest of the space */
 td:nth-child(1), th:nth-child(1) {
     width: auto;
