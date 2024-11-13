@@ -1,8 +1,6 @@
 if (!require(shiny)) { install.packages("shiny") }
 library(shiny)
 
-#library(shinythemes)
-
 if (!require(plotly)) { install.packages("plotly") }
 library(plotly)
 
@@ -11,8 +9,6 @@ library(readxl)
 
 if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
-
-#library(shinydashboard)
 
 if (!require(mapview)) { install.packages("mapview") }
 library(mapview)
